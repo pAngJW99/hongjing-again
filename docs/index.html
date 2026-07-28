@@ -32,7 +32,7 @@
   <div id="train"></div><div class="paper p1"></div><div class="paper p2"></div><div class="paper p3"></div>
   <button id="star" aria-label="星形便签">★</button>
   <div id="girl"><i class="pony"></i><i class="head"></i><i class="body"></i><i class="bag"></i><i class="legs"></i></div>
-  <header><div class="title panel"><small>A区 · 序章</small><b>宏景火车站</b></div><button id="sound" class="panel">小钢琴：关</button></header>
+  <header><div class="title panel"><small>A区 · 序章</small><b>宏景火车站</b></div><button id="sound" class="panel">环境音：关</button></header>
   <div id="collection" class="panel"><span id="stampState">○ 回到宏景</span><span id="noteState">☆ 星形便签</span></div>
   <div id="message" class="panel"><span id="messageText">按 A / D 或方向键，在站台上走一走</span><button id="look">查看 E</button></div>
   <div id="hint" class="panel">←　左右移动　→</div>
@@ -47,9 +47,9 @@
   const keys=new Set();addEventListener("keydown",e=>{if(["ArrowLeft","ArrowRight","a","A","d","D"].includes(e.key)){e.preventDefault();keys.add(e.key.toLowerCase())}if(["e","E","Enter"].includes(e.key))interact()});addEventListener("keyup",e=>keys.delete(e.key.toLowerCase()));
   let last=performance.now();function tick(now){const d=Math.min(32,now-last);last=now;if(keys.has("arrowleft")||keys.has("a"))move(-d*.012);if(keys.has("arrowright")||keys.has("d"))move(d*.012);requestAnimationFrame(tick)}requestAnimationFrame(tick);
   document.querySelector("#look").onclick=interact;document.querySelector("#touchLook").onclick=interact;document.querySelector("#left").onclick=()=>move(-1.4);document.querySelector("#right").onclick=()=>move(1.4);star.onclick=()=>{x=58;render();interact()};
-  function pianoNote(freq,when){const o=audio.createOscillator(),g=audio.createGain();o.type="triangle";o.frequency.setValueAtTime(freq,when);g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(.045,when+.018);g.gain.exponentialRampToValueAtTime(.0001,when+.72);o.connect(g).connect(audio.destination);o.start(when);o.stop(when+.78)}
-  function playPianoPhrase(){const notes=[[523.25,0],[659.25,.42],[783.99,.84],[659.25,1.26],[587.33,1.68],[698.46,2.1],[880,2.52],[698.46,2.94]];const start=audio.currentTime+.04;notes.forEach(([freq,offset])=>pianoNote(freq,start+offset))}
-  document.querySelector("#sound").onclick=function(){if(audio){clearInterval(pianoTimer);audio.close();audio=null;this.textContent="小钢琴：关";return}audio=new AudioContext();playPianoPhrase();pianoTimer=setInterval(playPianoPhrase,3400);this.textContent="小钢琴：开"};
+  function softNote(freq,when,length,volume,type="triangle"){const o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.setValueAtTime(freq,when);g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(volume,when+.035);g.gain.exponentialRampToValueAtTime(.0001,when+length);o.connect(g).connect(audio.ambience);o.start(when);o.stop(when+length+.08)}
+  function playAmbientPhrase(){const start=audio.currentTime+.08,notes=[[523.25,0],[659.25,.48],[783.99,.96],[659.25,1.44],[440,2],[523.25,2.48],[659.25,2.96],[523.25,3.44],[349.23,4],[440,4.48],[523.25,4.96],[659.25,5.44],[392,6],[493.88,6.48],[587.33,6.96],[698.46,7.44]],pads=[[[261.63,329.63,392],0],[[220,261.63,329.63],2],[[174.61,220,261.63],4],[[196,246.94,293.66],6]];notes.forEach(([freq,offset])=>softNote(freq,start+offset,.85,.035));pads.forEach(([chord,offset])=>chord.forEach(freq=>softNote(freq,start+offset,2.35,.008,"sine")))}
+  document.querySelector("#sound").onclick=function(){if(audio){clearInterval(pianoTimer);audio.close();audio=null;this.textContent="环境音：关";return}audio=new AudioContext();const master=audio.createGain(),delay=audio.createDelay(),feedback=audio.createGain();master.gain.value=.88;delay.delayTime.value=.31;feedback.gain.value=.16;master.connect(audio.destination);master.connect(delay);delay.connect(feedback);feedback.connect(delay);delay.connect(audio.destination);audio.ambience=master;playAmbientPhrase();pianoTimer=setInterval(playAmbientPhrase,8000);this.textContent="环境音：开"};
   addEventListener("load",()=>requestAnimationFrame(render));
 </script>
 </body>
