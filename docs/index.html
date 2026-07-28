@@ -24,7 +24,7 @@
     #train:before{content:"";position:absolute;inset:29% 14% 38% 10%;background:repeating-linear-gradient(90deg,#a8d4cb 0 25px,#31534b 25px 30px);border:3px solid #e3c36b}#train:after{content:"";position:absolute;left:18%;bottom:-11px;width:28px;height:28px;border:7px solid #171d1b;border-radius:50%;background:#667069;box-shadow:100px 0 0 -7px #667069,100px 0 0 0 #171d1b}
     .controls{display:none;position:absolute;z-index:30;left:12px;right:12px;bottom:14px;justify-content:space-between;padding:7px}.controls button{min-width:68px;min-height:48px}
     @keyframes depart{0%{transform:translateX(0)}75%{opacity:1}100%{transform:translateX(-130%);opacity:0}}@keyframes paper{0%{left:-5%;transform:translateY(0) rotate(0);opacity:0}8%{opacity:.9}45%{transform:translateY(24px) rotate(180deg)}80%{opacity:.85}100%{left:105%;transform:translateY(-16px) rotate(390deg);opacity:0}}@keyframes star{50%{transform:translate(-50%,-56%) scale(1.13)}}@keyframes bob{50%{transform:translate(-50%,-5px)}}
-    @media(max-width:760px){main{padding:0}#game{width:100%;height:100%;aspect-ratio:auto;border:0;border-radius:0;background-size:auto 100%}header{inset:12px 12px auto}#collection{right:12px;top:76px}#message{bottom:82px;width:calc(100% - 24px)}.controls{display:flex}#girl{top:62%}}
+    @media(max-width:760px){main{display:block;overflow-x:auto;overflow-y:hidden;padding:0;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;touch-action:pan-x}#game{width:198.5vh;min-width:860px;height:100%;aspect-ratio:auto;border:0;border-radius:0;background-size:auto 100%;scroll-snap-align:start}header{position:fixed;inset:12px 12px auto}#collection{position:fixed;right:12px;top:76px}#message{position:fixed;left:12px;bottom:82px;transform:none;width:calc(100vw - 24px)}#hint{position:fixed;left:50%;bottom:160px}.controls{position:fixed;display:flex;left:12px;right:12px;bottom:14px}#girl{top:62%}}
   </style>
 </head>
 <body>
@@ -39,15 +39,16 @@
   <nav class="controls panel"><button id="left">←</button><button id="right">→</button><button id="touchLook">查看</button></nav>
 </section></main>
 <script>
-  const girl=document.querySelector("#girl"),text=document.querySelector("#messageText"),star=document.querySelector("#star"),hint=document.querySelector("#hint");
+  const stage=document.querySelector("main"),game=document.querySelector("#game"),girl=document.querySelector("#girl"),text=document.querySelector("#messageText"),star=document.querySelector("#star"),hint=document.querySelector("#hint");
   const stampState=document.querySelector("#stampState"),noteState=document.querySelector("#noteState");let x=37,note=false,stamp=false,audio=null;
-  function render(){girl.style.left=x+"%";hint.hidden=true;if(!note&&Math.abs(x-58)<4.5)text.textContent="按 E 或点击“查看”，拾起发光的星形便签";else if(!stamp&&Math.abs(x-48)<4.5)text.textContent="按 E 或点击“查看”，读一读站牌";else if(x>83)text.textContent="右边的路通往宏景城区"}
+  function render(){girl.style.left=x+"%";hint.hidden=true;if(!note&&Math.abs(x-58)<4.5)text.textContent="按 E 或点击“查看”，拾起发光的星形便签";else if(!stamp&&Math.abs(x-48)<4.5)text.textContent="按 E 或点击“查看”，读一读站牌";else if(x>83)text.textContent="右边的路通往宏景城区";if(matchMedia("(max-width:760px)").matches){const px=game.clientWidth*x/100,margin=stage.clientWidth*.28;if(px<stage.scrollLeft+margin||px>stage.scrollLeft+stage.clientWidth-margin)stage.scrollTo({left:Math.max(0,px-stage.clientWidth*.45),behavior:"smooth"})}}
   function move(n){x=Math.max(31,Math.min(88,x+n));render()}
   function interact(){if(!note&&Math.abs(x-58)<4.5){note=true;star.remove();noteState.textContent="★ 星形便签";noteState.className="yes";text.textContent="便签：如果不知道往哪里走，就先去有风的地方。"}else if(!stamp&&Math.abs(x-48)<4.5){stamp=true;stampState.textContent="◉ 回到宏景";stampState.className="yes";text.textContent="地点邮戳已收集：回到宏景"}else text.textContent="这里有风、蝉鸣，还有列车远去的声音。"}
   const keys=new Set();addEventListener("keydown",e=>{if(["ArrowLeft","ArrowRight","a","A","d","D"].includes(e.key)){e.preventDefault();keys.add(e.key.toLowerCase())}if(["e","E","Enter"].includes(e.key))interact()});addEventListener("keyup",e=>keys.delete(e.key.toLowerCase()));
   let last=performance.now();function tick(now){const d=Math.min(32,now-last);last=now;if(keys.has("arrowleft")||keys.has("a"))move(-d*.012);if(keys.has("arrowright")||keys.has("d"))move(d*.012);requestAnimationFrame(tick)}requestAnimationFrame(tick);
   document.querySelector("#look").onclick=interact;document.querySelector("#touchLook").onclick=interact;document.querySelector("#left").onclick=()=>move(-1.4);document.querySelector("#right").onclick=()=>move(1.4);star.onclick=()=>{x=58;render();interact()};
   document.querySelector("#sound").onclick=function(){if(audio){audio.close();audio=null;this.textContent="环境声：关";return}audio=new AudioContext();const g=audio.createGain(),o=audio.createOscillator(),l=audio.createOscillator(),lg=audio.createGain();g.gain.value=.025;o.type="triangle";o.frequency.value=4620;l.frequency.value=11;lg.gain.value=.7;l.connect(lg).connect(g.gain);o.connect(g).connect(audio.destination);o.start();l.start();this.textContent="环境声：开"};
+  addEventListener("load",()=>requestAnimationFrame(render));
 </script>
 </body>
 </html>
