@@ -32,7 +32,7 @@
   <div id="train"></div><div class="paper p1"></div><div class="paper p2"></div><div class="paper p3"></div>
   <button id="star" aria-label="星形便签">★</button>
   <div id="girl"><i class="pony"></i><i class="head"></i><i class="body"></i><i class="bag"></i><i class="legs"></i></div>
-  <header><div class="title panel"><small>A区 · 序章</small><b>宏景火车站</b></div><button id="sound" class="panel">环境声：关</button></header>
+  <header><div class="title panel"><small>A区 · 序章</small><b>宏景火车站</b></div><button id="sound" class="panel">小钢琴：关</button></header>
   <div id="collection" class="panel"><span id="stampState">○ 回到宏景</span><span id="noteState">☆ 星形便签</span></div>
   <div id="message" class="panel"><span id="messageText">按 A / D 或方向键，在站台上走一走</span><button id="look">查看 E</button></div>
   <div id="hint" class="panel">←　左右移动　→</div>
@@ -40,14 +40,16 @@
 </section></main>
 <script>
   const stage=document.querySelector("main"),game=document.querySelector("#game"),girl=document.querySelector("#girl"),text=document.querySelector("#messageText"),star=document.querySelector("#star"),hint=document.querySelector("#hint");
-  const stampState=document.querySelector("#stampState"),noteState=document.querySelector("#noteState");let x=37,note=false,stamp=false,audio=null;
+  const stampState=document.querySelector("#stampState"),noteState=document.querySelector("#noteState");let x=37,note=false,stamp=false,audio=null,pianoTimer=null;
   function render(){girl.style.left=x+"%";hint.hidden=true;if(!note&&Math.abs(x-58)<4.5)text.textContent="按 E 或点击“查看”，拾起发光的星形便签";else if(!stamp&&Math.abs(x-48)<4.5)text.textContent="按 E 或点击“查看”，读一读站牌";else if(x>83)text.textContent="右边的路通往宏景城区";if(matchMedia("(max-width:760px)").matches){const px=game.clientWidth*x/100,margin=stage.clientWidth*.28;if(px<stage.scrollLeft+margin||px>stage.scrollLeft+stage.clientWidth-margin)stage.scrollTo({left:Math.max(0,px-stage.clientWidth*.45),behavior:"smooth"})}}
   function move(n){x=Math.max(31,Math.min(88,x+n));render()}
   function interact(){if(!note&&Math.abs(x-58)<4.5){note=true;star.remove();noteState.textContent="★ 星形便签";noteState.className="yes";text.textContent="便签：如果不知道往哪里走，就先去有风的地方。"}else if(!stamp&&Math.abs(x-48)<4.5){stamp=true;stampState.textContent="◉ 回到宏景";stampState.className="yes";text.textContent="地点邮戳已收集：回到宏景"}else text.textContent="这里有风、蝉鸣，还有列车远去的声音。"}
   const keys=new Set();addEventListener("keydown",e=>{if(["ArrowLeft","ArrowRight","a","A","d","D"].includes(e.key)){e.preventDefault();keys.add(e.key.toLowerCase())}if(["e","E","Enter"].includes(e.key))interact()});addEventListener("keyup",e=>keys.delete(e.key.toLowerCase()));
   let last=performance.now();function tick(now){const d=Math.min(32,now-last);last=now;if(keys.has("arrowleft")||keys.has("a"))move(-d*.012);if(keys.has("arrowright")||keys.has("d"))move(d*.012);requestAnimationFrame(tick)}requestAnimationFrame(tick);
   document.querySelector("#look").onclick=interact;document.querySelector("#touchLook").onclick=interact;document.querySelector("#left").onclick=()=>move(-1.4);document.querySelector("#right").onclick=()=>move(1.4);star.onclick=()=>{x=58;render();interact()};
-  document.querySelector("#sound").onclick=function(){if(audio){audio.close();audio=null;this.textContent="环境声：关";return}audio=new AudioContext();const g=audio.createGain(),o=audio.createOscillator(),l=audio.createOscillator(),lg=audio.createGain();g.gain.value=.025;o.type="triangle";o.frequency.value=4620;l.frequency.value=11;lg.gain.value=.7;l.connect(lg).connect(g.gain);o.connect(g).connect(audio.destination);o.start();l.start();this.textContent="环境声：开"};
+  function pianoNote(freq,when){const o=audio.createOscillator(),g=audio.createGain();o.type="triangle";o.frequency.setValueAtTime(freq,when);g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(.045,when+.018);g.gain.exponentialRampToValueAtTime(.0001,when+.72);o.connect(g).connect(audio.destination);o.start(when);o.stop(when+.78)}
+  function playPianoPhrase(){const notes=[[523.25,0],[659.25,.42],[783.99,.84],[659.25,1.26],[587.33,1.68],[698.46,2.1],[880,2.52],[698.46,2.94]];const start=audio.currentTime+.04;notes.forEach(([freq,offset])=>pianoNote(freq,start+offset))}
+  document.querySelector("#sound").onclick=function(){if(audio){clearInterval(pianoTimer);audio.close();audio=null;this.textContent="小钢琴：关";return}audio=new AudioContext();playPianoPhrase();pianoTimer=setInterval(playPianoPhrase,3400);this.textContent="小钢琴：开"};
   addEventListener("load",()=>requestAnimationFrame(render));
 </script>
 </body>
