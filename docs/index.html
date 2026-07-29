@@ -79,5 +79,9 @@
   const renderBeforeExitHint=render;
   render=function(){renderBeforeExitHint();const nearScene=Math.abs(x-18)<5&&Math.abs(y-64)<7||Math.abs(x-60)<6&&Math.abs(y-64)<7||Math.abs(x-80)<6&&Math.abs(y-64)<7;if(!eventText&&storyStep===4&&!inWaitingRoom&&!nearScene){text.textContent="风带着淡淡的花香。这里就是宏景。";text.classList.add("idle")}};
 </script>
+<script>
+  const renderWithSafeSpritePosition=render;
+  render=function(){renderWithSafeSpritePosition();girl.style.backgroundPosition=(frame*50)+"% "+(spriteRows[facing]*33.333333)+"%"};
+</script>
 </body>
 </html>
