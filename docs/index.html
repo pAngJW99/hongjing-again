@@ -154,7 +154,7 @@
   const moveBeforeCity=move;
   move=function(dx,dy){if(mapArea!=="city"){moveBeforeCity(dx,dy);return}if(dx<0)facing="left";else if(dx>0)facing="right";else if(dy<0)facing="back";else if(dy>0)facing="front";x=Math.max(5,Math.min(94,x+dx));y=Math.max(8,Math.min(88,y+dy));queueSave();render()};
   const renderBeforeCity=render;
-  render=function(){renderBeforeCity();stationExit.hidden=true;const nearStationDoor=x>=25&&x<=34&&y>=52&&y<=64;if(mapArea!=="city"){if(!eventText&&storyStep>=3&&nearStationDoor){text.textContent="候车室的门开着。按 E 或点击“查看”，出站前往宏景。";text.classList.remove("idle")}return}schoolNpc.hidden=true;if(!eventText){text.textContent="摊开地图，选择一个目的地。目前可以前往：宏景八中。";text.classList.add("idle")}};
+  render=function(){renderBeforeCity();stationExit.hidden=true;const nearStationDoor=x>=25&&x<=34&&y>=52&&y<=64,nearHall=Math.abs(x-18)<5&&Math.abs(y-64)<7,nearBench=Math.abs(x-60)<6&&Math.abs(y-64)<7,nearShop=Math.abs(x-80)<6&&Math.abs(y-64)<7;if(mapArea!=="city"){if(!eventText&&storyStep>=3&&nearStationDoor){text.textContent="候车室的门开着。按 E 或点击“查看”，出站前往宏景。";text.classList.remove("idle")}else if(!eventText&&(promptPaused||(!nearHall&&!nearBench&&!nearShop))){text.textContent="风带着淡淡的花香。这里就是宏景。";text.classList.add("idle")}return}schoolNpc.hidden=true;if(!eventText){text.textContent="摊开地图，选择一个目的地。目前可以前往：宏景八中。";text.classList.add("idle")}};
   const interactBeforeCity=interact;
   interact=function(){
     if(mapArea==="station"&&storyStep>=3&&x>=25&&x<=34&&y>=52&&y<=64){enterCity();return}
