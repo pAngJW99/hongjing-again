@@ -41,6 +41,8 @@
     .map-place{border:2px solid #75512a;background:#fff1c9;color:#48351f;padding:4px 7px;font:700 12px serif;box-shadow:2px 2px 0 #38503c;opacity:0;transform:translateY(5px);transition:.5s}
     .city-map.city-unlocked .map-place{opacity:1;transform:none}.place-school{left:52%;top:17%}.place-field{left:73%;top:19%}
     .city-map .title small{display:block}.city-map .title b{font-size:clamp(20px,2.2vw,34px)}
+    #stationExit{position:absolute;z-index:18;left:23%;top:61%;border:2px solid #6b4a28;background:#fff0c7;color:#294933;padding:6px 10px;font:700 13px serif;box-shadow:3px 3px 0 #27402e;cursor:pointer;animation:exitPulse 1.4s steps(2) infinite}
+    #stationExit[hidden],.city-map #stationExit{display:none}@keyframes exitPulse{50%{transform:translateY(-3px)}}
     @media(max-width:760px){#game.city-map{width:169vh;min-width:740px;background-size:auto 100%}.city-npc{width:28px;height:42px}.map-place{font-size:10px}}
   </style>
 </head>
@@ -53,6 +55,7 @@
     <div class="ticket form-ticket"><div class="eyebrow" style="text-align:center">TRAVELER'S REGISTER</div><h2>创建新旅人</h2><label class="field-label" for="travelerInput">姓名</label><input id="travelerInput" class="name-input" maxlength="12" placeholder="请输入你的姓名"><label class="field-label">年龄</label><div class="age-row"><button id="ageDown" aria-label="年龄减一">‹</button><b id="ageValue">18</b><span>岁</span><button id="ageUp" aria-label="年龄加一">›</button></div><label class="field-label">旅人形象</label><div class="avatar-choice"><div class="avatar"></div><span>背包旅人</span></div><button id="startJourney" class="stamp-button">启 程 出 发　→</button></div>
   </section>
   <div id="train"></div><div class="paper p1"></div><div class="paper p2"></div><div class="paper p3"></div>
+  <button id="stationExit" hidden>出站 →</button>
   <div class="map-fog fog-north"></div><div class="map-fog fog-east"></div><div class="map-fog fog-west"></div>
   <button id="schoolNpc" class="city-npc" aria-label="宏景八中的学生" hidden></button><span class="map-place place-school">教学楼</span><span class="map-place place-field">操场 / 足球场</span>
   <button id="star" aria-label="星形便签">★</button>
@@ -113,7 +116,7 @@
 <script>
   /* 第二地图：从候车室出站，沿街前往八中。 */
   let mapArea="station",schoolMet=false;
-  const schoolNpc=document.querySelector("#schoolNpc"),cityTitle=document.querySelector(".title b"),citySub=document.querySelector(".title small");
+  const schoolNpc=document.querySelector("#schoolNpc"),stationExit=document.querySelector("#stationExit"),cityTitle=document.querySelector(".title b"),citySub=document.querySelector(".title small");
   const saveBeforeCity=saveGame;
   saveGame=function(){saveBeforeCity();try{const saved=JSON.parse(localStorage.getItem(saveKey)||"{}");saved.mapArea=mapArea;saved.schoolMet=schoolMet;localStorage.setItem(saveKey,JSON.stringify(saved));savedGame=saved}catch{}};
   const restoreBeforeCity=restoreGame;
@@ -126,12 +129,12 @@
     text.classList.toggle("idle",schoolMet);queueSave();render();
   }
   const moveBeforeCity=move;
-  move=function(dx,dy){if(mapArea!=="city")return moveBeforeCity(dx,dy);if(dx<0)facing="left";else if(dx>0)facing="right";else if(dy<0)facing="back";else if(dy>0)facing="front";x=Math.max(5,Math.min(94,x+dx));y=Math.max(8,Math.min(88,y+dy));queueSave();render()};
+  move=function(dx,dy){if(mapArea!=="city"){moveBeforeCity(dx,dy);return}if(dx<0)facing="left";else if(dx>0)facing="right";else if(dy<0)facing="back";else if(dy>0)facing="front";x=Math.max(5,Math.min(94,x+dx));y=Math.max(8,Math.min(88,y+dy));queueSave();render()};
   const renderBeforeCity=render;
-  render=function(){renderBeforeCity();if(mapArea!=="city")return;const nearNpc=Math.abs(x-41)<4&&Math.abs(y-38)<6;if(!eventText){if(!schoolMet&&nearNpc)text.textContent="有人站在八中校门前。按 E 或点击“查看”打个招呼。";else if(!schoolMet)text.textContent="沿着街道向北走，宏景八中的校门就在前面。";else text.textContent="晨雾散开，宏景的轮廓也渐渐清晰起来。";text.classList.toggle("idle",schoolMet&&!nearNpc)}};
+  render=function(){renderBeforeCity();stationExit.hidden=true;const nearStationDoor=x>=22&&x<=35&&y>=57&&y<=68;if(mapArea!=="city"){if(!eventText&&storyStep>=3&&nearStationDoor){text.textContent="候车室的门开着。按 E 或点击“查看”，出站前往宏景。";text.classList.remove("idle")}return}const nearNpc=Math.abs(x-41)<4&&Math.abs(y-38)<6;if(!eventText){if(!schoolMet&&nearNpc)text.textContent="有人站在八中校门前。按 E 或点击“查看”打个招呼。";else if(!schoolMet)text.textContent="沿着街道向北走，宏景八中的校门就在前面。";else text.textContent="晨雾散开，宏景的轮廓也渐渐清晰起来。";text.classList.toggle("idle",schoolMet&&!nearNpc)}};
   const interactBeforeCity=interact;
   interact=function(){
-    if(mapArea==="station"&&storyStep===4&&inWaitingRoom){enterCity();return}
+    if(mapArea==="station"&&storyStep>=3&&x>=22&&x<=35&&y>=57&&y<=68){enterCity();return}
     if(mapArea!=="city")return interactBeforeCity();
     const nearNpc=Math.abs(x-41)<4&&Math.abs(y-38)<6;
     if(!schoolMet&&nearNpc){schoolMet=true;game.classList.add("city-unlocked");showEvent("八中学生：你也是刚回宏景吗？教学楼和操场都在里面，去转转吧。\n\n宏景八中已解锁：教学楼 / 操场。\");saveGame();return}
@@ -140,6 +143,7 @@
     else render()
   };
   schoolNpc.onclick=()=>{x=41;y=38;render();interact()};
+  stationExit.onclick=()=>{if(storyStep>=4)enterCity()};
 </script>
 </body>
 </html>
