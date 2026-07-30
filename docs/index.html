@@ -134,7 +134,7 @@
   render=function(){renderBeforeCity();stationExit.hidden=true;const nearStationDoor=x>=10&&x<=36&&y>=48&&y<=72;if(mapArea!=="city"){if(!eventText&&storyStep>=3&&nearStationDoor){text.textContent="候车室的门开着。按 E 或点击“查看”，出站前往宏景。";text.classList.remove("idle")}return}const nearNpc=Math.abs(x-41)<4&&Math.abs(y-38)<6;if(!eventText){if(!schoolMet&&nearNpc)text.textContent="有人站在八中校门前。按 E 或点击“查看”打个招呼。";else if(!schoolMet)text.textContent="沿着街道向北走，宏景八中的校门就在前面。";else text.textContent="晨雾散开，宏景的轮廓也渐渐清晰起来。";text.classList.toggle("idle",schoolMet&&!nearNpc)}};
   const interactBeforeCity=interact;
   interact=function(){
-    if(mapArea==="station"&&storyStep>=3&&x>=10&&x<=36&&y>=48&&y<=72){enterCity();return}
+    if(mapArea==="station"&&(storyStep>=4||(storyStep===3&&x>=10&&x<=36&&y>=48&&y<=72))){enterCity();return}
     if(mapArea!=="city")return interactBeforeCity();
     const nearNpc=Math.abs(x-41)<4&&Math.abs(y-38)<6;
     if(!schoolMet&&nearNpc){schoolMet=true;game.classList.add("city-unlocked");showEvent("八中学生：你也是刚回宏景吗？教学楼和操场都在里面，去转转吧。\n\n宏景八中已解锁：教学楼 / 操场。\");saveGame();return}
