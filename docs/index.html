@@ -49,7 +49,7 @@
     .city-map .map-fog,.city-map.city-unlocked .map-fog{display:block;opacity:.86;filter:drop-shadow(0 5px 4px #385b7088)}
     .city-map .fog-north{clip-path:polygon(0 0,35% 0,35% 100%,0 100%);background-position:left center}
     .city-map .fog-east{clip-path:polygon(91% 0,100% 0,100% 100%,91% 100%);background-position:right center}
-    .city-map .fog-west{clip-path:polygon(0 43%,100% 43%,100% 100%,0 100%);background-position:center bottom}
+    .city-map .fog-west{clip-path:polygon(0 43%,100% 43%,100% 100%,32% 100%,32% 68%,5% 68%,5% 100%,0 100%);background-position:center bottom}
     .map-location{display:none;position:absolute;z-index:9;border:2px solid #79552e;background:#fff0c8e8;color:#4c3823;padding:5px 9px;font:700 clamp(10px,1vw,14px) serif;box-shadow:3px 3px 0 #354b39;white-space:nowrap;transform:translate(-50%,-50%)}
     .city-map .map-location{display:block}.map-location.locked{opacity:.5;filter:grayscale(.45);pointer-events:none}.map-location.locked:before{content:"☁ ";font-size:.9em}
     .map-location.open{z-index:15;border-color:#315d3e;background:#fff1bd;color:#214b34;cursor:pointer;animation:mapPin 1.2s steps(2) infinite}.map-location.open:before{content:"◎ ";color:#b34d30}
@@ -75,7 +75,7 @@
   <span class="map-location loc-building">教学楼</span><span class="map-location loc-field">操场 / 足球场</span>
   <span class="map-location locked loc-tutor">元元辅导班 / 林家老宅</span><span class="map-location locked loc-lane">林荫小路</span>
   <span class="map-location locked loc-park">小公园</span><span class="map-location locked loc-chess">石桌棋盘</span><span class="map-location locked loc-cycle">骑车散步道</span>
-  <span class="map-location locked loc-station">宏景火车站</span><span class="map-location locked loc-photo">老照相馆</span><span class="map-location locked loc-night">夜市巷子</span><span class="map-location locked loc-stall">路边摊 / 夜市</span>
+  <button id="mapStation" class="map-location open loc-station">宏景火车站</button><span class="map-location locked loc-photo">老照相馆</span><span class="map-location locked loc-night">夜市巷子</span><span class="map-location locked loc-stall">路边摊 / 夜市</span>
   <button id="star" aria-label="星形便签">★</button>
   <div id="girl" aria-label="背着绿色背包的游客"></div>
   <header><div class="title panel"><small>A区 · 序章</small><b>宏景火车站</b></div><div class="top-actions"><div class="time-card panel"><span>☀</span><small>晴 · 清晨</small><b id="clock">08:20</b></div><button id="menuButton" class="menu-button" aria-label="打开旅行菜单">▣</button></div></header>
@@ -146,6 +146,11 @@
     text.textContent="摊开地图，选择一个目的地。目前可以前往：宏景八中。";
     text.classList.add("idle");queueSave();render();
   }
+  function returnToStation(){
+    mapArea="station";game.classList.remove("city-map","city-unlocked");game.classList.add("started","resumed");schoolNpc.hidden=true;
+    cityTitle.textContent="宏景火车站";citySub.textContent="A区 · 序章";x=38;y=67;inWaitingRoom=false;playing=true;eventText="";
+    saveGame();showEvent("你收起地图，又回到了宏景火车站。远处的铁轨还留着列车离开的余响。");
+  }
   const moveBeforeCity=move;
   move=function(dx,dy){if(mapArea!=="city"){moveBeforeCity(dx,dy);return}if(dx<0)facing="left";else if(dx>0)facing="right";else if(dy<0)facing="back";else if(dy>0)facing="front";x=Math.max(5,Math.min(94,x+dx));y=Math.max(8,Math.min(88,y+dy));queueSave();render()};
   const renderBeforeCity=render;
@@ -157,6 +162,7 @@
     render()
   };
   document.querySelector("#mapSchool").onclick=()=>{text.textContent="宏景八中 · 已解锁。教学楼与体育场的具体场景会从这里进入。";text.classList.remove("idle")};
+  document.querySelector("#mapStation").onclick=returnToStation;
   stationExit.onclick=()=>{if(storyStep>=4)enterCity()};
 </script>
 </body>
