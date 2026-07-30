@@ -137,7 +137,7 @@
     if(mapArea==="station"&&(storyStep>=4||(storyStep===3&&x>=10&&x<=36&&y>=48&&y<=72))){enterCity();return}
     if(mapArea!=="city")return interactBeforeCity();
     const nearNpc=Math.abs(x-41)<4&&Math.abs(y-38)<6;
-    if(!schoolMet&&nearNpc){schoolMet=true;game.classList.add("city-unlocked");showEvent("八中学生：你也是刚回宏景吗？教学楼和操场都在里面，去转转吧。\n\n宏景八中已解锁：教学楼 / 操场。\");saveGame();return}
+    if(!schoolMet&&nearNpc){schoolMet=true;game.classList.add("city-unlocked");showEvent("八中学生：你也是刚回宏景吗？教学楼和操场都在里面，去转转吧。\n\n宏景八中已解锁：教学楼 / 操场。");saveGame();return}
     if(schoolMet&&Math.abs(x-52)<7&&Math.abs(y-17)<8){showEvent("教学楼：早读的声音从走廊尽头飘出来。")}
     else if(schoolMet&&Math.abs(x-73)<8&&Math.abs(y-19)<9){showEvent("操场：风从跑道掠过，足球门安静地立在晨光里。")}
     else render()
