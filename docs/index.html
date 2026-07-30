@@ -57,6 +57,10 @@
     .loc-school{left:43%;top:28%}.loc-building{left:57%;top:13%}.loc-field{left:77%;top:19%}.loc-tutor{left:31%;top:56%}.loc-lane{left:44%;top:58%}.loc-park{left:68%;top:55%}.loc-chess{left:83%;top:55%}.loc-cycle{left:91%;top:64%}.loc-station{left:18%;top:84%}.loc-photo{left:59%;top:73%}.loc-night{left:72%;top:82%}.loc-stall{left:87%;top:88%}
     .city-map #message{z-index:22;left:50%;bottom:3%;width:min(720px,72%);transform:translateX(-50%);padding:12px 16px}.city-map #message #look{display:none}
     @media(max-width:760px){.city-map .map-location{font-size:10px;padding:4px 6px}.city-map #message{position:fixed;left:12px;right:12px;bottom:18px;width:auto;transform:none}.city-map header{pointer-events:none}.city-map .menu-button{pointer-events:auto}}
+    .city-map .map-fog{display:none!important}
+    .map-cloud{display:none;position:absolute;z-index:10;height:auto;pointer-events:none;image-rendering:pixelated;filter:drop-shadow(0 5px 4px #385b7066);animation:cloudDrift 4.8s ease-in-out infinite alternate}
+    .city-map .map-cloud{display:block}.cloud-a{left:-3%;top:-5%;width:34%}.cloud-b{left:7%;top:18%;width:25%;animation-delay:-1.7s}.cloud-c{left:-5%;top:36%;width:31%;animation-delay:-3.1s}.cloud-d{left:22%;top:42%;width:27%;animation-delay:-.8s}.cloud-e{left:48%;top:44%;width:31%;animation-delay:-2.4s}.cloud-f{left:73%;top:40%;width:30%;animation-delay:-4s}.cloud-g{left:34%;top:63%;width:29%;animation-delay:-1.2s}.cloud-h{left:56%;top:67%;width:27%;animation-delay:-3.5s}.cloud-i{left:77%;top:65%;width:29%;animation-delay:-.3s}.cloud-j{left:47%;top:82%;width:27%;animation-delay:-2.1s}.cloud-k{left:75%;top:84%;width:30%;animation-delay:-4.4s}.cloud-l{left:89%;top:1%;width:18%;animation-delay:-1.5s;transform:scaleX(-1)}
+    @keyframes cloudDrift{from{margin-left:-.7%;margin-top:0}to{margin-left:.7%;margin-top:-.8%}}
   </style>
 </head>
 <body>
@@ -70,6 +74,10 @@
   <div id="train"></div><div class="paper p1"></div><div class="paper p2"></div><div class="paper p3"></div>
   <button id="stationExit" hidden>出站 →</button>
   <div class="map-fog fog-north"></div><div class="map-fog fog-east"></div><div class="map-fog fog-west"></div>
+  <img class="map-cloud cloud-a" src="map-cloud-1.png" alt=""><img class="map-cloud cloud-b" src="map-cloud-8.png" alt=""><img class="map-cloud cloud-c" src="map-cloud-3.png" alt="">
+  <img class="map-cloud cloud-d" src="map-cloud-9.png" alt=""><img class="map-cloud cloud-e" src="map-cloud-5.png" alt=""><img class="map-cloud cloud-f" src="map-cloud-2.png" alt="">
+  <img class="map-cloud cloud-g" src="map-cloud-7.png" alt=""><img class="map-cloud cloud-h" src="map-cloud-1.png" alt=""><img class="map-cloud cloud-i" src="map-cloud-9.png" alt="">
+  <img class="map-cloud cloud-j" src="map-cloud-4.png" alt=""><img class="map-cloud cloud-k" src="map-cloud-8.png" alt=""><img class="map-cloud cloud-l" src="map-cloud-6.png" alt="">
   <button id="schoolNpc" class="city-npc" aria-label="宏景八中的学生" hidden></button><span class="map-place place-school">教学楼</span><span class="map-place place-field">操场 / 足球场</span>
   <button id="mapSchool" class="map-location open loc-school">宏景八中</button>
   <span class="map-location loc-building">教学楼</span><span class="map-location loc-field">操场 / 足球场</span>
@@ -158,7 +166,7 @@
   const interactBeforeCity=interact;
   interact=function(){
     if(mapArea==="station"&&storyStep>=3&&x>=25&&x<=34&&y>=52&&y<=64){enterCity();return}
-    if(mapArea==="station"&&stamp&&Math.abs(x-49)<4.5&&Math.abs(y-64)<7){showEvent("站牌：列车离开后，旧站牌上只剩“宏景”两个字。");return}
+    if(mapArea==="station"&&stamp&&Math.abs(x-49)<4.5&&Math.abs(y-64)<7){showEvent("站牌：晨光落在站牌上，“宏景”两个字显得格外清晰。");return}
     if(mapArea!=="city")return interactBeforeCity();
     render()
   };
