@@ -162,12 +162,12 @@
   }
   function enterSchool(resuming=false){
     mapArea="school";game.classList.remove("city-map","city-unlocked");game.classList.add("school-scene","started","resumed");schoolNpc.hidden=true;
-    cityTitle.textContent="宏景八中";citySub.textContent="校园 · 教学楼前";x=52;y=79;facing="back";inWaitingRoom=false;playing=true;eventText="";
+    cityTitle.textContent="宏景八中";citySub.textContent="校园 · 教学楼前";travelerAgeLabel.textContent=travelerAge+" 岁 · 宏景八中 · 教学楼前";x=52;y=79;facing="back";inWaitingRoom=false;playing=true;eventText="";
     saveGame();showEvent(resuming?"你回到了宏景八中的教学楼前。":"地图轻轻合上。树影落在石砖广场上，教学楼就在前面。");
   }
   function returnToStation(){
     mapArea="station";game.classList.remove("city-map","city-unlocked","school-scene");game.classList.add("started","resumed");schoolNpc.hidden=true;
-    cityTitle.textContent="宏景火车站";citySub.textContent="A区 · 序章";x=38;y=67;inWaitingRoom=false;playing=true;eventText="";
+    cityTitle.textContent="宏景火车站";citySub.textContent="A区 · 序章";travelerAgeLabel.textContent=travelerAge+" 岁 · 宏景火车站";x=38;y=67;inWaitingRoom=false;playing=true;eventText="";
     saveGame();showEvent("你收起地图，又回到了宏景火车站。远处的铁轨还留着列车离开的余响。");
   }
   const moveBeforeCity=move;
