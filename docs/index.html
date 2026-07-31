@@ -68,6 +68,7 @@
     .school-npc{display:none;position:absolute;z-index:11;left:48%;top:64%;width:38px;height:98px;padding:0;border:0;background:url("lin-wanxing.png") center/contain no-repeat;filter:drop-shadow(2px 3px #24412b88);transform:translate(-50%,-100%);image-rendering:pixelated;cursor:pointer}.school-scene .school-npc{display:block}.school-npc[hidden]{display:none!important}.school-npc:after{content:"!";position:absolute;left:50%;top:-19px;transform:translateX(-50%);width:17px;height:17px;border:2px solid #79552e;background:#fff1bd;color:#b54a35;font-weight:900;line-height:13px;box-shadow:2px 2px 0 #314631}
     #collection .school-task{opacity:.72;color:#7b5832;font-size:12px}#collection .school-task.task-done{opacity:1;color:#3f663f}
     @media(max-width:760px){#game.school-scene{width:200.2vh;min-width:860px;background-size:auto 100%}.school-npc{width:35px;height:90px}#message.dialogue{width:calc(100vw - 24px);min-height:112px}.dialogue-speaker{flex-basis:68px;padding-right:8px}.dialogue-portrait{width:50px;height:50px}}
+    .album-detail p{white-space:pre-line}
   </style>
 </head>
 <body>
@@ -146,7 +147,7 @@
   }
   function renderAlbumItems(){itemGrid.replaceChildren(...albumItems.map(item=>makeAlbumCell(item)));const first=itemGrid.querySelector(".album-cell");if(first)showAlbumDetail(albumItems[0],first)}
   function renderAlbumPeople(){
-    const people=[{title:"林晚星",isLin:true,unlocked:()=>schoolMet,text:"宏景八中的学生。她把住处钥匙和一张写满路线的纸条交给了你，又匆匆赶回操场训练。"},...Array.from({length:8},()=>({title:"？？？",unlocked:()=>false,text:"这段相遇还没有发生。"}))];
+    const people=[{title:"林晚星",isLin:true,unlocked:()=>schoolMet,text:"宏景八中的“特别存在”。\n温柔、坚定，也有一点让人看不透的固执。\n有人说，她改变了一支球队；也有人说，是这座校园改变了她。\n曾经只是听说过的名字，没想到可以成为她的房客。"},...Array.from({length:8},()=>({title:"？？？",unlocked:()=>false,text:"这段相遇还没有发生。"}))];
     personGrid.replaceChildren(...people.map(person=>makeAlbumCell(person,"person")));const first=personGrid.querySelector(".album-cell");if(first)showAlbumDetail(people[0],first,"person")
   }
   function switchAlbumPage(page){const items=page==="items";itemsPage.hidden=!items;peoplePage.hidden=items;itemsTab.classList.toggle("active",items);peopleTab.classList.toggle("active",!items);items?renderAlbumItems():renderAlbumPeople()}
