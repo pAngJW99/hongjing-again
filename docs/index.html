@@ -61,6 +61,9 @@
     .map-cloud{display:none;position:absolute;z-index:10;height:auto;pointer-events:none;image-rendering:pixelated;filter:drop-shadow(0 5px 4px #385b7066);animation:cloudDrift 4.8s ease-in-out infinite alternate}
     .city-map .map-cloud{display:block}.cloud-a{left:-3%;top:-5%;width:34%}.cloud-b{left:7%;top:18%;width:25%;animation-delay:-1.7s}.cloud-c{left:-5%;top:36%;width:31%;animation-delay:-3.1s}.cloud-d{left:22%;top:42%;width:27%;animation-delay:-.8s}.cloud-e{left:48%;top:44%;width:31%;animation-delay:-2.4s}.cloud-f{left:73%;top:40%;width:30%;animation-delay:-4s}.cloud-g{left:34%;top:63%;width:29%;animation-delay:-1.2s}.cloud-h{left:56%;top:67%;width:27%;animation-delay:-3.5s}.cloud-i{left:77%;top:65%;width:29%;animation-delay:-.3s}.cloud-j{left:47%;top:82%;width:27%;animation-delay:-2.1s}.cloud-k{left:75%;top:84%;width:30%;animation-delay:-4.4s}.cloud-l{left:89%;top:1%;width:18%;animation-delay:-1.5s;transform:scaleX(-1)}.cloud-m{left:-2%;top:9%;width:30%;animation-delay:-2.7s}.cloud-n{left:-4%;top:47%;width:34%;animation-delay:-.5s}.cloud-o{left:19%;top:39%;width:27%;animation-delay:-3.8s}.cloud-p{left:33%;top:48%;width:28%;animation-delay:-1.9s}.cloud-q{left:54%;top:47%;width:30%;animation-delay:-4.6s}.cloud-r{left:76%;top:46%;width:29%;animation-delay:-1.1s}.cloud-s{left:33%;top:76%;width:28%;animation-delay:-3s}.cloud-t{left:63%;top:78%;width:29%;animation-delay:-.1s}.cloud-u{left:84%;top:58%;width:23%;animation-delay:-2.2s}.cloud-v{left:88%;top:17%;width:20%;animation-delay:-4.2s;transform:scaleX(-1)}
     @keyframes cloudDrift{from{margin-left:-.7%;margin-top:0}to{margin-left:.7%;margin-top:-.8%}}
+    #game.school-scene{aspect-ratio:1776/887;background-image:url("school-entrance.png");background-size:cover}
+    .school-scene #train,.school-scene #star,.school-scene .paper,.school-scene .map-fog,.school-scene .map-cloud,.school-scene .map-location,.school-scene .city-npc{display:none!important}
+    @media(max-width:760px){#game.school-scene{width:200.2vh;min-width:860px;background-size:auto 100%}}
   </style>
 </head>
 <body>
@@ -90,7 +93,7 @@
   <button id="star" aria-label="星形便签">★</button>
   <div id="girl" aria-label="背着绿色背包的游客"></div>
   <header><div class="title panel"><small>A区 · 序章</small><b>宏景火车站</b></div><div class="top-actions"><div class="time-card panel"><span>☀</span><small>晴 · 清晨</small><b id="clock">08:20</b></div><button id="menuButton" class="menu-button" aria-label="打开旅行菜单">▣</button></div></header>
-  <aside id="menuPanel" class="menu-panel panel" hidden><button id="editTraveler">修改身份</button><button id="restartJourney">重新开始</button><button id="immersiveToggle">进入沉浸模式</button><button id="albumButton">收藏册</button><button id="sound">环境音：关</button></aside><button id="immersiveExit" class="immersive-exit">退出</button>
+  <aside id="menuPanel" class="menu-panel panel" hidden><button id="editTraveler">修改身份</button><button id="restartJourney">重新开始</button><button id="immersiveToggle">进入沉浸模式</button><button id="mapButton">地图</button><button id="albumButton">收藏册</button><button id="sound">环境音：关</button></aside><button id="immersiveExit" class="immersive-exit">退出</button>
   <section id="album" class="cover album" hidden><div class="ticket album-ticket"><div class="eyebrow" style="text-align:center">HONG JING COLLECTION</div><h2>收藏册</h2><p>把重逢途中的小小纪念品，留在这里。</p><div class="album-list"><div id="albumStamp" class="album-entry"><span class="album-icon stamp-asset"></span><span class="album-info"><b>未收集</b>这里留给一枚地点邮戳。</span></div><div id="albumNote" class="album-entry"><span class="album-icon star-asset"></span><span class="album-info"><b>未收集</b>这里留给一张尚未拆开的便签。</span></div></div><button id="albumClose" class="stamp-button" style="margin-top:22px">合 上 收 藏 册</button></div></section>
   <section id="itemReveal" class="cover item-reveal" hidden><div class="ticket item-ticket"><div class="eyebrow">NEW COLLECTION</div><div id="revealArt" class="reveal-art"></div><h2 id="revealTitle"></h2><p id="revealText"></p><button id="archiveItem" class="stamp-button">放 入 收 藏 册</button></div></section>
   <div id="collection" class="panel"><b class="traveler-tag" id="travelerName">旅人</b><span class="identity" id="travelerAge">18 岁 · 宏景火车站</span><span id="stampState">○ 回到宏景</span><span id="noteState">☆ 星形便签</span></div>
@@ -149,32 +152,39 @@
   const saveBeforeCity=saveGame;
   saveGame=function(){saveBeforeCity();try{const saved=JSON.parse(localStorage.getItem(saveKey)||"{}");saved.mapArea=mapArea;saved.schoolMet=schoolMet;localStorage.setItem(saveKey,JSON.stringify(saved));savedGame=saved}catch{}};
   const restoreBeforeCity=restoreGame;
-  restoreGame=function(data){mapArea=data.mapArea||"station";schoolMet=!!data.schoolMet;restoreBeforeCity(data);if(mapArea==="city")enterCity(true)};
+  restoreGame=function(data){mapArea=data.mapArea||"station";schoolMet=!!data.schoolMet;restoreBeforeCity(data);if(mapArea==="city")enterCity(true);else if(mapArea==="school")enterSchool(true)};
   function enterCity(resuming=false){
-    mapArea="city";schoolNpc.hidden=true;game.classList.add("city-map");game.classList.remove("city-unlocked");
+    mapArea="city";schoolNpc.hidden=true;game.classList.remove("school-scene");game.classList.add("city-map");game.classList.remove("city-unlocked");
     x=23;y=75;inWaitingRoom=false;star.hidden=true;playing=false;
     cityTitle.textContent="宏景地图";citySub.textContent="目的地选择";
     text.textContent="摊开地图，选择一个目的地。目前可以前往：宏景八中。";
     text.classList.add("idle");queueSave();render();
   }
+  function enterSchool(resuming=false){
+    mapArea="school";game.classList.remove("city-map","city-unlocked");game.classList.add("school-scene","started","resumed");schoolNpc.hidden=true;
+    cityTitle.textContent="宏景八中";citySub.textContent="校园 · 教学楼前";x=52;y=79;facing="back";inWaitingRoom=false;playing=true;eventText="";
+    saveGame();showEvent(resuming?"你回到了宏景八中的教学楼前。":"地图轻轻合上。树影落在石砖广场上，教学楼就在前面。");
+  }
   function returnToStation(){
-    mapArea="station";game.classList.remove("city-map","city-unlocked");game.classList.add("started","resumed");schoolNpc.hidden=true;
+    mapArea="station";game.classList.remove("city-map","city-unlocked","school-scene");game.classList.add("started","resumed");schoolNpc.hidden=true;
     cityTitle.textContent="宏景火车站";citySub.textContent="A区 · 序章";x=38;y=67;inWaitingRoom=false;playing=true;eventText="";
     saveGame();showEvent("你收起地图，又回到了宏景火车站。远处的铁轨还留着列车离开的余响。");
   }
   const moveBeforeCity=move;
-  move=function(dx,dy){if(mapArea!=="city"){moveBeforeCity(dx,dy);return}if(dx<0)facing="left";else if(dx>0)facing="right";else if(dy<0)facing="back";else if(dy>0)facing="front";x=Math.max(5,Math.min(94,x+dx));y=Math.max(8,Math.min(88,y+dy));queueSave();render()};
+  move=function(dx,dy){if(mapArea==="school"){if(dx<0)facing="left";else if(dx>0)facing="right";else if(dy<0)facing="back";else if(dy>0)facing="front";promptPaused=false;x=Math.max(9,Math.min(91,x+dx));y=Math.max(54,Math.min(86,y+dy));queueSave();render();return}if(mapArea!=="city"){moveBeforeCity(dx,dy);return}};
   const renderBeforeCity=render;
-  render=function(){renderBeforeCity();stationExit.hidden=true;const nearStationDoor=x>=25&&x<=34&&y>=52&&y<=64,nearStationSign=Math.abs(x-49)<4.5&&Math.abs(y-64)<7,nearHall=Math.abs(x-18)<5&&Math.abs(y-64)<7,nearBench=Math.abs(x-60)<6&&Math.abs(y-64)<7,nearShop=Math.abs(x-80)<6&&Math.abs(y-64)<7;if(mapArea!=="city"){if(!eventText&&storyStep>=3&&nearStationDoor){text.textContent="候车室的门开着。按 E 或点击“查看”，出站前往宏景。";text.classList.remove("idle")}else if(!eventText&&nearStationSign&&!promptPaused){text.textContent=stamp?"按 E 或点击“查看”，再看看宏景站牌。":"按 E 或点击“查看”，读一读站牌。";text.classList.remove("idle")}else if(!eventText&&(promptPaused||(!nearStationSign&&!nearHall&&!nearBench&&!nearShop))){text.textContent="风带着淡淡的花香。这里就是宏景。";text.classList.add("idle")}return}schoolNpc.hidden=true;if(!eventText){text.textContent="摊开地图，选择一个目的地。目前可以前往：宏景八中。";text.classList.add("idle")}};
+  render=function(){renderBeforeCity();stationExit.hidden=true;if(mapArea==="school"){const nearSchoolDoor=x>=45&&x<=60&&y<=59;if(!eventText&&nearSchoolDoor&&!promptPaused){text.textContent="教学楼的大门就在前面。按 E 或点击“查看”。";text.classList.remove("idle")}else if(!eventText){text.textContent="树影在石砖上轻轻摇晃。这里是宏景八中。";text.classList.add("idle")}return}const nearStationDoor=x>=25&&x<=34&&y>=52&&y<=64,nearStationSign=Math.abs(x-49)<4.5&&Math.abs(y-64)<7,nearHall=Math.abs(x-18)<5&&Math.abs(y-64)<7,nearBench=Math.abs(x-60)<6&&Math.abs(y-64)<7,nearShop=Math.abs(x-80)<6&&Math.abs(y-64)<7;if(mapArea!=="city"){if(!eventText&&storyStep>=3&&nearStationDoor){text.textContent="候车室的门开着。按 E 或点击“查看”，出站前往宏景。";text.classList.remove("idle")}else if(!eventText&&nearStationSign&&!promptPaused){text.textContent=stamp?"按 E 或点击“查看”，再看看宏景站牌。":"按 E 或点击“查看”，读一读站牌。";text.classList.remove("idle")}else if(!eventText&&(promptPaused||(!nearStationSign&&!nearHall&&!nearBench&&!nearShop))){text.textContent="风带着淡淡的花香。这里就是宏景。";text.classList.add("idle")}return}schoolNpc.hidden=true;if(!eventText){text.textContent="摊开地图，选择一个目的地。目前可以前往：宏景八中。";text.classList.add("idle")}};
   const interactBeforeCity=interact;
   interact=function(){
+    if(mapArea==="school"){if(x>=45&&x<=60&&y<=59)showEvent("教学楼：门厅里很安静，早晨的光正落在台阶上。");else render();return}
     if(mapArea==="station"&&storyStep>=3&&x>=25&&x<=34&&y>=52&&y<=64){enterCity();return}
     if(mapArea==="station"&&stamp&&Math.abs(x-49)<4.5&&Math.abs(y-64)<7){showEvent("站牌：晨光落在站牌上，“宏景”两个字显得格外清晰。");return}
     if(mapArea!=="city")return interactBeforeCity();
     render()
   };
-  document.querySelector("#mapSchool").onclick=()=>{text.textContent="宏景八中 · 已解锁。教学楼与体育场的具体场景会从这里进入。";text.classList.remove("idle")};
+  document.querySelector("#mapSchool").onclick=()=>enterSchool();
   document.querySelector("#mapStation").onclick=returnToStation;
+  document.querySelector("#mapButton").onclick=()=>{menuPanel.hidden=true;if(mapArea==="city"){render();return}if(storyStep>=3)enterCity();else showEvent("先完成站台上的记录，再从候车室出站吧。")};
   stationExit.onclick=()=>{if(storyStep>=4)enterCity()};
 </script>
 </body>
