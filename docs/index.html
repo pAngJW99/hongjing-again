@@ -335,7 +335,9 @@
   showSchoolTasks=function(){if(!schoolMet){showSchoolTasksBeforeHomeQuest();return}if(homeQuestStep===0)homeQuestStep=1;showHomeQuestTasks()};
   const renderBeforeHomeQuest=render;
   render=function(){
+    const keepCityView=mapArea==="city"&&matchMedia("(max-width:760px)").matches,cityViewLeft=keepCityView?stage.scrollLeft:0;
     renderBeforeHomeQuest();syncHomeQuestUI();
+    if(keepCityView)stage.scrollLeft=cityViewLeft;
     if(eventText)return;
     if(mapArea==="school"&&schoolMet&&homeQuestStep===1){text.textContent="林晚星的纸条上画着路线。打开右上角菜单里的「地图」看看吧。";text.classList.remove("idle")}
     else if(mapArea==="city"&&homeQuestStep===2){text.textContent="正准备照着纸条上的路线去新住处，公园那边却传来一声清脆的落子声。树荫下似乎正下到关键处……过去看看吧。";text.classList.remove("idle")}
