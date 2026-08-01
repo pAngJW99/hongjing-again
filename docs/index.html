@@ -280,7 +280,7 @@
 <script>
   /* 新住处任务：用一次小小的迷路，教会玩家从菜单使用地图。 */
   let homeQuestStep=0,routeDialogueIndex=-1;
-  const mapPark=document.querySelector("#mapPark"),mapTutor=document.querySelector("#mapTutor"),mapHome=document.querySelector("#mapHome"),mapButton=document.querySelector("#mapButton");
+  const mapPark=document.querySelector("#mapPark"),mapTutor=document.querySelector("#mapTutor"),mapHome=document.querySelector("#mapHome"),mapButton=document.querySelector("#mapButton"),journeyClock=document.querySelector("#clock"),journeyWeather=document.querySelector(".time-card small");
   const routeDialogue=[
     {text:"树荫下，棋子落盘的声音干脆利落。你忍不住凑过去看了一会儿，等回过神，棋局已经散了大半。"},
     {text:"你重新摊开地图，绕过喷泉，穿过树荫，又绕过喷泉。第三次回到同一张石桌旁时，刚才下棋的老人终于抬起了头。"},
@@ -314,6 +314,8 @@
     mapPark.textContent=homeQuestStep===2?"小公园 · 有棋声":"小公园";
     mapTutor.className="map-location loc-tutor "+(homeQuestStep>=3?"open":"locked");
     mapHome.className="map-location loc-home "+(homeQuestStep>=3?"open":"locked");
+    journeyClock.textContent=homeQuestStep>=3?"10:40":"08:20";
+    journeyWeather.textContent=homeQuestStep>=3?"晴 · 上午":"晴 · 清晨";
     showHomeQuestTasks();
   }
   function showRouteDialogueLine(){
