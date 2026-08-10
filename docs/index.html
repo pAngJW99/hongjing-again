@@ -313,7 +313,7 @@
     mapHome.className="map-location loc-home "+(homeQuestStep>=3?"open":"locked");
     journeyClock.textContent=homeQuestStep>=3?"10:40":"08:20";
     journeyWeather.textContent=homeQuestStep>=3?"晴 · 上午":"晴 · 清晨";
-    showHomeQuestTasks();
+    if(mapArea==="station")showStationCollectibles();else showHomeQuestTasks();
   }
   function showRouteDialogueLine(){
     const line=routeDialogue[routeDialogueIndex],speaker=line.speaker==="traveler"?travelerName.textContent:line.speaker;
@@ -339,6 +339,16 @@
     renderBeforeHomeQuest();syncHomeQuestUI();
     if(keepCityView)stage.scrollLeft=cityViewLeft;
     if(eventText)return;
+    if(mapArea==="station"){
+      const nearStamp=Math.abs(x-49)<4.5&&Math.abs(y-64)<7,nearStar=Math.abs(x-66)<4.5&&Math.abs(y-64)<7,nearDoor=x>=25&&x<=34&&y>=52&&y<=64,nearScene=Math.abs(x-18)<5&&Math.abs(y-64)<7||Math.abs(x-60)<6&&Math.abs(y-64)<7||Math.abs(x-80)<6&&Math.abs(y-64)<7;
+      if(storyStep===0){text.textContent="试着向左或向右走一走。";text.classList.remove("idle")}
+      else if(nearStamp&&!stamp){text.textContent="按 E 或点击“查看”，读一读站牌并收集邮戳。";text.classList.remove("idle")}
+      else if(nearStar&&!note){text.textContent="按 E 或点击“查看”，拾起地上的星形便签。";text.classList.remove("idle")}
+      else if(nearDoor&&stamp&&note){text.textContent="邮戳和便签都收好了。按 E 或点击“查看”，从候车室出站。";text.classList.remove("idle")}
+      else if(nearDoor){text.textContent="离开之前，再找找站台上的邮戳和星形便签吧。";text.classList.remove("idle")}
+      else if(!nearScene){text.textContent=stamp&&note?"站台上的两件小纪念品已经收齐，可以去候车室出站了。":"风带着淡淡的花香。站台上似乎还有值得带走的小纪念。";text.classList.add("idle")}
+      return;
+    }
     if(mapArea==="school"&&schoolMet&&homeQuestStep===1){text.textContent="林晚星的纸条上画着路线。打开右上角菜单里的「地图」看看吧。";text.classList.remove("idle")}
     else if(mapArea==="city"&&homeQuestStep===2){text.textContent="正准备照着纸条上的路线去新住处，公园那边却传来一声清脆的落子声。树荫下似乎正下到关键处……过去看看吧。";text.classList.remove("idle")}
     else if(mapArea==="city"&&homeQuestStep===3){text.textContent="大伯在地图上点出了两个相邻的地方：元元辅导班，还有隔壁门口摆着两盆花的新住处。";text.classList.remove("idle")}
@@ -353,7 +363,7 @@
   mapButton.onclick=()=>{
     menuPanel.hidden=true;
     if(mapArea==="city"){render();return}
-    if(storyStep<3){showEvent("先完成站台上的记录，再从候车室出站吧。");return}
+    if(mapArea==="station"&&!(stamp&&note)){showEvent("先收齐站台邮戳和星形便签，再从候车室出站吧。");return}
     if(schoolMet&&homeQuestStep===1)homeQuestStep=2;
     saveGame();enterCity();
   };
@@ -363,6 +373,16 @@
     if(homeQuestStep<3)return;
     if(homeQuestStep===3){homeQuestStep=4;saveGame();syncHomeQuestUI();showEvent("你照着大伯指的方向穿过林荫小路。门口果然摆着两盆花——元元辅导班隔壁，就是林晚星说的新住处。");messageBox.classList.add("route-dialogue")}
     else{showEvent("新住处就在这里。二楼最里面，钥匙已经安静地躺在背包里。");messageBox.classList.add("route-dialogue")}
+  };
+  const interactBeforeFreeStationCollect=interact;
+  interact=function(){
+    if(mapArea==="station"){
+      const nearStamp=Math.abs(x-49)<4.5&&Math.abs(y-64)<7,nearStar=Math.abs(x-66)<4.5&&Math.abs(y-64)<7,nearDoor=x>=25&&x<=34&&y>=52&&y<=64;
+      if(storyStep>=1&&!stamp&&nearStamp){stamp=true;stampState.textContent="◉ 回到宏景";stampState.className="yes";if(note)storyStep=3;saveGame();revealItem("stamp");return}
+      if(storyStep>=1&&!note&&nearStar){note=true;star.remove();noteState.textContent="★ 星形便签";noteState.className="yes";if(stamp)storyStep=3;saveGame();revealItem("note");return}
+      if(nearDoor){if(stamp&&note){storyStep=Math.max(storyStep,3);saveGame();enterCity()}else showEvent("候车室的门开着，不过站台上的邮戳和星形便签还没有收齐。");return}
+    }
+    interactBeforeFreeStationCollect();
   };
   addEventListener("load",()=>{syncHomeQuestUI();render()});
 </script>
