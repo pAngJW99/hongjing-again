@@ -79,6 +79,10 @@
     .school-npc{display:none;position:absolute;z-index:11;left:48%;top:64%;width:38px;height:98px;padding:0;border:0;background:url("lin-wanxing.png") center/contain no-repeat;filter:drop-shadow(2px 3px #24412b88);transform:translate(-50%,-100%);image-rendering:pixelated;cursor:pointer}.school-scene .school-npc{display:block}.school-npc[hidden]{display:none!important}.school-npc:after{content:"!";position:absolute;left:50%;top:-19px;transform:translateX(-50%);width:17px;height:17px;border:2px solid #79552e;background:#fff1bd;color:#b54a35;font-weight:900;line-height:13px;box-shadow:2px 2px 0 #314631}
     #collection .school-task{opacity:.72;color:#7b5832;font-size:12px}#collection .school-task.task-done{opacity:1;color:#3f663f}
     @media(max-width:760px){#game.school-scene{width:200.2vh;min-width:860px;background-size:auto 100%}.school-npc{width:35px;height:90px}#message.dialogue{width:calc(100vw - 24px);min-height:112px}.dialogue-speaker{flex-basis:68px;padding-right:8px}.dialogue-portrait{width:50px;height:50px}}
+    #game.home-scene{aspect-ratio:1448/1086;background-color:#030604;background-image:url("new-home.png");background-position:center;background-size:contain;background-repeat:no-repeat}
+    .home-scene #train,.home-scene #star,.home-scene>.paper,.home-scene .map-fog,.home-scene .map-cloud,.home-scene .map-location,.home-scene .city-npc,.home-scene .school-npc,.home-scene #girl,.home-scene .controls{display:none!important}
+    #game.home-scene:before{content:"";position:absolute;z-index:18;inset:0;background:#020403;opacity:0;pointer-events:none;transition:opacity 1.5s ease}.home-scene.home-locked:before{opacity:1}.home-scene #message{z-index:22}.home-scene #message.home-dialogue{width:min(760px,calc(100% - 80px));min-height:104px}
+    @media(max-width:760px){#game.home-scene{width:133.33vh;width:133.33svh;min-width:720px;background-size:auto 100%}.home-scene #message.home-dialogue{left:12px;right:12px;width:auto;min-height:112px}}
     .album-detail p{white-space:pre-line}
     .cover.album{background:#10272bc7;backdrop-filter:blur(1px)}
     .album-detail-close{display:none}
@@ -336,7 +340,7 @@
     if(homeQuestStep<=1)noteState.textContent="○ 打开菜单里的地图";
     else if(homeQuestStep===2)noteState.textContent="○ 在地图上寻找住处";
     else if(homeQuestStep===3)noteState.textContent="○ 按大伯指的路前往住处";
-    else noteState.textContent="✓ 已找到新住处";
+    else noteState.textContent=homeUnlocked?"✓ 已进入新住处":"○ 上楼，用钥匙打开房门";
   }
   function syncHomeQuestUI(){
     if(schoolMet&&homeQuestStep===0)homeQuestStep=1;
@@ -423,6 +427,57 @@
     interactBeforeFreeStationCollect();
   };
   addEventListener("load",()=>{syncHomeQuestUI();render()});
+</script>
+<script>
+  /* 新住处入场：门外保持黑屏，完成开锁对白后再亮出房间。 */
+  let homeUnlocked=false,homeArrivalIndex=-1;
+  const homeArrivalDialogue=[
+    {text:"居民楼二楼。二楼最里面的房门上，贴着一张熟悉的便签。"},
+    {speaker:"门上的便签",text:"就是这里。钥匙往左转两圈。——林晚星"},
+    {text:"你把钥匙插进锁孔，往左转了两圈，又试着推门。"},
+    {speaker:"traveler",portrait:"traveler",text:"打不开？"},
+    {text:"翻过便签，背面居然还有一行。"},
+    {speaker:"便签背面",text:"先把门往里推一下。"},
+    {speaker:"traveler",portrait:"traveler",text:"……写在背面真的能看到吗。"},
+    {text:"你把门往里推了推，再次转动钥匙。咔哒一声，房门打开了。"}
+  ];
+  const closeDialogueBeforeHomeArrival=closeDialogueUI;
+  closeDialogueUI=function(){closeDialogueBeforeHomeArrival();messageBox.classList.remove("home-dialogue")};
+  function showHomeArrivalLine(){
+    const line=homeArrivalDialogue[homeArrivalIndex],speaker=line.speaker==="traveler"?travelerName.textContent:line.speaker;
+    eventText=speaker&&!line.portrait?speaker+"：“"+line.text+"”":line.text;messageBox.classList.add("dialogue","home-dialogue");
+    if(speaker&&line.portrait){dialogueSpeaker.hidden=false;dialogueName.textContent=speaker;dialogueName.classList.toggle("player-name",line.speaker==="traveler");dialoguePortrait.className="dialogue-portrait "+line.portrait}else{dialogueSpeaker.hidden=true;dialogueName.classList.remove("player-name")}
+    lookButton.textContent=homeArrivalIndex===homeArrivalDialogue.length-1?"推门进去":"继续";touchLookButton.textContent=lookButton.textContent;playing=false;render();
+  }
+  function startHomeArrival(){homeArrivalIndex=0;homeUnlocked=false;game.classList.add("home-locked");showHomeArrivalLine()}
+  function advanceHomeArrival(){
+    homeArrivalIndex++;
+    if(homeArrivalIndex<homeArrivalDialogue.length){showHomeArrivalLine();return}
+    homeArrivalIndex=-1;homeUnlocked=true;homeQuestStep=Math.max(4,homeQuestStep);eventText="";closeDialogueUI();lookButton.textContent="查看 E";touchLookButton.textContent="查看";game.classList.remove("home-locked");saveGame();render();
+  }
+  function enterHome(resuming=false){
+    mapArea="home";closeParkEvent();closeDialogueUI();game.classList.remove("city-map","city-unlocked","school-scene","route-search","route-found","park-event-active");game.classList.add("home-scene","started","resumed");
+    cityTitle.textContent="新住处";citySub.textContent="居民楼二楼";travelerAgeLabel.textContent=travelerAge+" 岁 · 新住处";journeyClock.textContent="10:50";journeyWeather.textContent="晴 · 上午";star.hidden=true;x=50;y=91;playing=false;eventText="";
+    if(resuming&&homeUnlocked){homeArrivalIndex=-1;game.classList.remove("home-locked");saveGame();render()}else{saveGame();startHomeArrival()}
+  }
+  const saveBeforeHomeArrival=saveGame;
+  saveGame=function(){saveBeforeHomeArrival();try{const saved=JSON.parse(localStorage.getItem(saveKey)||"{}");saved.homeUnlocked=homeUnlocked;saved.mapArea=mapArea;localStorage.setItem(saveKey,JSON.stringify(saved));savedGame=saved}catch{}};
+  const restoreBeforeHomeArrival=restoreGame;
+  restoreGame=function(data){homeUnlocked=!!data.homeUnlocked;restoreBeforeHomeArrival(data);if((data.mapArea||"station")==="home")enterHome(true)};
+  const renderBeforeHomeArrival=render;
+  render=function(){
+    if(mapArea!=="home"){renderBeforeHomeArrival();return}
+    hint.hidden=true;stationExit.hidden=true;syncHomeQuestUI();journeyClock.textContent="10:50";journeyWeather.textContent="晴 · 上午";
+    if(homeArrivalIndex>=0||eventText)return;
+    text.textContent="房门在身后轻轻合上。日光落进屋里，这里以后就是你在宏景的住处。";text.classList.add("idle");
+  };
+  const finishBeforeHomeArrival=finishEvent;
+  finishEvent=function(){if(homeArrivalIndex>=0){advanceHomeArrival();return}finishBeforeHomeArrival()};
+  const enterCityBeforeHomeArrival=enterCity;
+  enterCity=function(resuming=false){game.classList.remove("home-scene","home-locked");enterCityBeforeHomeArrival(resuming)};
+  const mapButtonBeforeHomeArrival=mapButton.onclick;
+  mapButton.onclick=()=>{if(mapArea==="home"){menuPanel.hidden=true;enterCity();return}mapButtonBeforeHomeArrival()};
+  mapHome.onclick=()=>{if(homeQuestStep<3)return;homeQuestStep=Math.max(4,homeQuestStep);enterHome(homeUnlocked)};
 </script>
 <script>
   (()=>{
