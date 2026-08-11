@@ -81,9 +81,11 @@
     @media(max-width:760px){.album-ticket{display:flex;flex-direction:column;max-height:94vh;padding:18px 14px}.album-ticket>.album-subtitle{margin-bottom:9px}.album-tabs{margin-bottom:10px}.album-workspace{display:block;min-height:0;overflow:hidden}.album-pages{min-height:0;overflow:hidden}.album-grid{max-height:42vh;overflow-y:auto}.album-detail{display:none;position:absolute;z-index:8;inset:90px 12px 68px;min-height:0;padding:16px;overflow-y:auto;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-style:solid;box-shadow:0 0 0 999px #10272b99}.album-detail.mobile-open{display:flex}.album-detail .album-detail-visual{width:92px;height:92px;min-height:92px;margin:0 0 10px;grid-row:auto}.album-detail h3{align-self:auto}.album-detail-close{display:block;margin-top:14px;border:2px solid #29452f;background:#385d3d;color:#fff4cf;padding:9px 16px;cursor:pointer;font-weight:700}.album-close{flex:0 0 auto;margin-top:12px!important}}
     /* Self-hosted CJK handwriting font; keep decorative Latin and clock numerals crisp. */
     @font-face{font-family:"HomeworkCJK";src:url("CEFFontsCJK-Regular.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
-    html,body,button,input{font-family:"HomeworkCJK","Microsoft YaHei",sans-serif}
+    html,body,button,input{font-family:"HomeworkCJK","Microsoft YaHei",sans-serif;font-synthesis:weight;font-weight:600}
     .title b,.hero-title,.traveler-tag,.map-place,.map-location,#stationExit,.dialogue-portrait.elder,.album-detail-visual,.album-cell.locked:after{font-family:"HomeworkCJK","Microsoft YaHei",sans-serif}
     .eyebrow,.subtitle,#clock{font-family:"Microsoft YaHei",sans-serif}
+    #message{font-size:clamp(13px,1.25vw,18px)}
+    #messageText,.menu-panel button,#collection,.album-detail p,.album-cell span{font-weight:600}
   </style>
 </head>
 <body>
