@@ -432,14 +432,14 @@
     const started=performance.now(),minimum=700;let completed=0,actual=2,shown=0,closing=false,removed=false;
     const update=()=>{
       const elapsed=performance.now()-started,waiting=Math.min(84,elapsed/115),target=closing?100:Math.max(actual,waiting);
-      shown=Math.min(target,shown+Math.max(.35,(target-shown)*.16));
+      const step=closing?Math.max(1.2,(target-shown)*.22):Math.max(.35,(target-shown)*.16);shown=Math.min(target,shown+step);
       const rounded=Math.min(100,Math.round(shown));bar.style.width=rounded+"%";percent.textContent=rounded+"%";overlay.setAttribute("aria-valuenow",String(rounded));
       status.textContent=rounded<28?"正在清点行李……":rounded<58?"列车即将进站……":rounded<86?"正在展开宏景地图……":"准备踏上站台……";
-      if(closing&&shown>=99.5&&!removed){removed=true;bar.style.width="100%";percent.textContent="100%";overlay.setAttribute("aria-valuenow","100");status.textContent="欢迎回到宏景。";setTimeout(()=>overlay.classList.add("ready"),260);setTimeout(()=>overlay.remove(),950)}
+      if(closing&&shown>=99.5&&!removed){removed=true;clearInterval(timer);bar.style.width="100%";percent.textContent="100%";overlay.setAttribute("aria-valuenow","100");status.textContent="欢迎回到宏景。";setTimeout(()=>overlay.classList.add("ready"),260);setTimeout(()=>overlay.remove(),950)}
     };
     const timer=setInterval(update,90),settled=()=>{completed++;actual=2+completed/sources.length*90};
     const imageTasks=sources.map(source=>new Promise(resolve=>{const image=new Image();image.onload=image.onerror=()=>resolve();image.src=source}).finally(settled));
-    const finish=()=>{if(closing)return;const wait=Math.max(0,minimum-(performance.now()-started));setTimeout(()=>{closing=true;actual=100;update();setTimeout(()=>clearInterval(timer),1800)},wait)};
+    const finish=()=>{if(closing)return;const wait=Math.max(0,minimum-(performance.now()-started));setTimeout(()=>{closing=true;actual=100;update()},wait)};
     Promise.allSettled(imageTasks).then(finish);setTimeout(finish,12000);update();
   })();
 </script>
