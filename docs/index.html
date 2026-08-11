@@ -66,9 +66,13 @@
     .city-map.route-found .cloud-d,.city-map.route-found .cloud-o,.city-map.route-found .cloud-p,.city-map.route-found .cloud-g{opacity:.08}
     #game.home-map-guide #menuButton,.menu-panel #mapButton.quest-map-button{animation:questPulse 1s steps(2) infinite;background:#f5ce62;color:#284631;font-weight:800}
     @keyframes questPulse{50%{transform:translateY(-3px);box-shadow:0 0 0 5px #f4d36b66,4px 5px 0 #2e442e8c}}
-    .dialogue-portrait.elder{background:#e2c88e;display:grid;place-items:center;color:#5e462d;font:700 25px serif}.dialogue-portrait.elder:after{content:"伯"}
+    .dialogue-portrait.elder{background:#e2c88e url("park-elder-portrait.png") 50% 12%/180% auto no-repeat;font-size:0}.dialogue-portrait.elder:after{content:none}
     .city-map #message.route-dialogue #look{display:block}.city-map #message.route-dialogue{width:min(760px,calc(100% - 80px));min-height:104px}
     @media(max-width:760px){.city-map #message.route-dialogue{left:12px;right:12px;width:auto;min-height:112px}}
+    .park-event{position:absolute;z-index:40;left:50%;top:45%;width:min(900px,82%);max-height:74%;aspect-ratio:1448/965;transform:translate(-50%,-50%);overflow:hidden;border:5px solid #f1df9c;outline:4px solid #6f4b26;background:#284838;box-shadow:0 0 0 9999px #10272baa,9px 10px 0 #132b25}
+    .park-event[hidden]{display:none}.park-event img{display:block;width:100%;height:100%;object-fit:cover;image-rendering:pixelated}.park-event-label{position:absolute;left:16px;top:14px;padding:7px 12px;border:3px solid #6f4b26;background:#fff1bded;box-shadow:3px 3px 0 #29402f;color:#214536}.park-event-label small{display:block;color:#8d6030;font-size:10px;letter-spacing:.12em}.park-event-label b{font-size:17px;letter-spacing:.08em}
+    .park-event-active #message{z-index:46}.park-event-active .controls{display:none!important}.park-event-active .map-location{pointer-events:none}
+    @media(max-width:760px){.park-event{position:fixed;left:12px;right:12px;top:11vh;width:auto;max-height:none;transform:none}.park-event-label{left:10px;top:10px;padding:5px 9px}.park-event-label b{font-size:14px}.park-event-active #message{bottom:18px}}
     @keyframes cloudDrift{from{translate:-.7% 0}to{translate:.7% -.8%}}
     #game.school-scene{aspect-ratio:1776/887;background-image:url("school-entrance.png");background-size:cover}
     .school-scene #train,.school-scene #star,.school-scene>.paper,.school-scene .map-fog,.school-scene .map-cloud,.school-scene .map-location,.school-scene .city-npc{display:none!important}
@@ -127,6 +131,7 @@
   <img class="map-cloud cloud-m" data-src="map-cloud-9.png" decoding="async" alt=""><img class="map-cloud cloud-n" data-src="map-cloud-1.png" decoding="async" alt=""><img class="map-cloud cloud-o" data-src="map-cloud-5.png" decoding="async" alt="">
   <img class="map-cloud cloud-p" data-src="map-cloud-2.png" decoding="async" alt=""><img class="map-cloud cloud-q" data-src="map-cloud-9.png" decoding="async" alt=""><img class="map-cloud cloud-r" data-src="map-cloud-1.png" decoding="async" alt="">
   <img class="map-cloud cloud-s" data-src="map-cloud-8.png" decoding="async" alt=""><img class="map-cloud cloud-t" data-src="map-cloud-5.png" decoding="async" alt=""><img class="map-cloud cloud-u" data-src="map-cloud-7.png" decoding="async" alt=""><img class="map-cloud cloud-v" data-src="map-cloud-6.png" decoding="async" alt="">
+  <section id="parkEvent" class="park-event" aria-label="宏景小公园树荫棋局事件" hidden><img id="parkEventImage" data-src="park-chess-event.png" decoding="async" alt="树荫下，几位老人围着石桌下棋"><div class="park-event-label"><small>宏景小公园</small><b>树荫棋局</b></div></section>
   <button id="schoolNpc" class="school-npc" aria-label="和林晚星说话" hidden></button><span class="map-place place-school">教学楼</span><span class="map-place place-field">操场 / 足球场</span>
   <button id="mapSchool" class="map-location open loc-school">宏景八中</button>
   <span class="map-location loc-building">教学楼</span><span class="map-location loc-field">操场 / 足球场</span>
@@ -307,7 +312,7 @@
 <script>
   /* 新住处任务：用一次小小的迷路，教会玩家从菜单使用地图。 */
   let homeQuestStep=0,routeDialogueIndex=-1;
-  const mapPark=document.querySelector("#mapPark"),mapTutor=document.querySelector("#mapTutor"),mapHome=document.querySelector("#mapHome"),mapButton=document.querySelector("#mapButton"),journeyClock=document.querySelector("#clock"),journeyWeather=document.querySelector(".time-card small");
+  const mapPark=document.querySelector("#mapPark"),mapTutor=document.querySelector("#mapTutor"),mapHome=document.querySelector("#mapHome"),mapButton=document.querySelector("#mapButton"),journeyClock=document.querySelector("#clock"),journeyWeather=document.querySelector(".time-card small"),parkEvent=document.querySelector("#parkEvent"),parkEventImage=document.querySelector("#parkEventImage");
   const routeDialogue=[
     {text:"树荫下，棋子落盘的声音干脆利落。你忍不住凑过去看了一会儿，等回过神，棋局已经散了大半。"},
     {text:"你重新摊开地图，绕过喷泉，穿过树荫，又绕过喷泉。第三次回到同一张石桌旁时，刚才下棋的老人终于抬起了头。"},
@@ -321,6 +326,8 @@
   ];
   const closeDialogueBeforeHomeQuest=closeDialogueUI;
   closeDialogueUI=function(){closeDialogueBeforeHomeQuest();messageBox.classList.remove("route-dialogue")};
+  function openParkEvent(){if(parkEventImage.dataset.src){parkEventImage.src=parkEventImage.dataset.src;parkEventImage.removeAttribute("data-src")}const portraitPreload=new Image();portraitPreload.src="park-elder-portrait.png";parkEvent.hidden=false;game.classList.add("park-event-active")}
+  function closeParkEvent(){parkEvent.hidden=true;game.classList.remove("park-event-active")}
   function showHomeQuestTasks(){
     if(!schoolMet){showSchoolTasks();return}
     stampState.className="school-task task-done";noteState.className="school-task"+(homeQuestStep>=4?" task-done":"");
@@ -351,11 +358,11 @@
     if(speaker){dialogueSpeaker.hidden=false;dialogueName.textContent=speaker;dialogueName.classList.toggle("player-name",line.speaker==="traveler");dialoguePortrait.className="dialogue-portrait "+line.portrait}else{dialogueSpeaker.hidden=true;dialogueName.classList.remove("player-name")}
     lookButton.textContent=routeDialogueIndex===routeDialogue.length-1?"记住路线":"继续";touchLookButton.textContent=lookButton.textContent;playing=false;render();
   }
-  function startRouteDialogue(){if(homeQuestStep!==2)return;routeDialogueIndex=0;showRouteDialogueLine()}
+  function startRouteDialogue(){if(homeQuestStep!==2)return;openParkEvent();routeDialogueIndex=0;showRouteDialogueLine()}
   function advanceRouteDialogue(){
     routeDialogueIndex++;
     if(routeDialogueIndex<routeDialogue.length){showRouteDialogueLine();return}
-    routeDialogueIndex=-1;homeQuestStep=3;eventText="";playing=false;closeDialogueUI();lookButton.textContent="查看 E";touchLookButton.textContent="查看";syncHomeQuestUI();saveGame();render();
+    routeDialogueIndex=-1;homeQuestStep=3;eventText="";playing=false;closeDialogueUI();closeParkEvent();lookButton.textContent="查看 E";touchLookButton.textContent="查看";syncHomeQuestUI();saveGame();render();
   }
   const saveBeforeHomeQuest=saveGame;
   saveGame=function(){if(schoolMet&&homeQuestStep===0)homeQuestStep=1;saveBeforeHomeQuest();try{const saved=JSON.parse(localStorage.getItem(saveKey)||"{}");saved.homeQuestStep=homeQuestStep;localStorage.setItem(saveKey,JSON.stringify(saved));savedGame=saved}catch{}};
