@@ -79,10 +79,10 @@
     .school-npc{display:none;position:absolute;z-index:11;left:48%;top:64%;width:38px;height:98px;padding:0;border:0;background:url("lin-wanxing.png") center/contain no-repeat;filter:drop-shadow(2px 3px #24412b88);transform:translate(-50%,-100%);image-rendering:pixelated;cursor:pointer}.school-scene .school-npc{display:block}.school-npc[hidden]{display:none!important}.school-npc:after{content:"!";position:absolute;left:50%;top:-19px;transform:translateX(-50%);width:17px;height:17px;border:2px solid #79552e;background:#fff1bd;color:#b54a35;font-weight:900;line-height:13px;box-shadow:2px 2px 0 #314631}
     #collection .school-task{opacity:.72;color:#7b5832;font-size:12px}#collection .school-task.task-done{opacity:1;color:#3f663f}
     @media(max-width:760px){#game.school-scene{width:200.2vh;min-width:860px;background-size:auto 100%}.school-npc{width:35px;height:90px}#message.dialogue{width:calc(100vw - 24px);min-height:112px}.dialogue-speaker{flex-basis:68px;padding-right:8px}.dialogue-portrait{width:50px;height:50px}}
-    #game.home-scene{aspect-ratio:1448/1086;background-color:#030604;background-image:url("new-home.png");background-position:center;background-size:contain;background-repeat:no-repeat}
-    .home-scene #train,.home-scene #star,.home-scene>.paper,.home-scene .map-fog,.home-scene .map-cloud,.home-scene .map-location,.home-scene .city-npc,.home-scene .school-npc,.home-scene #girl,.home-scene .controls{display:none!important}
-    #game.home-scene:before{content:"";position:absolute;z-index:18;inset:0;background:#020403;opacity:0;pointer-events:none;transition:opacity 1.5s ease}.home-scene.home-locked:before{opacity:1}.home-scene #message{z-index:22}.home-scene #message.home-dialogue{width:min(760px,calc(100% - 80px));min-height:104px}
-    @media(max-width:760px){#game.home-scene{width:133.33vh;width:133.33svh;min-width:720px;background-size:auto 100%}.home-scene #message.home-dialogue{left:12px;right:12px;width:auto;min-height:112px}}
+    #game.home-scene{aspect-ratio:1448/1086;background-color:#030604;background-image:url("new-home.png");background-position:center 8px;background-size:105% auto;background-repeat:no-repeat}
+    .home-scene #train,.home-scene #star,.home-scene>.paper,.home-scene .map-fog,.home-scene .map-cloud,.home-scene .map-location,.home-scene .city-npc,.home-scene .school-npc{display:none!important}.home-scene #girl{display:block}.home-scene.home-locked .controls{display:none!important}
+    #game.home-scene:before{content:"";position:absolute;z-index:18;inset:0;background:#020403;opacity:0;pointer-events:none;transition:opacity 1.5s ease}#game.home-scene.home-locked:before{opacity:1}.home-scene #message{z-index:22}.home-scene #message.home-dialogue{width:min(760px,calc(100% - 80px));min-height:104px}
+    @media(max-width:760px){#game.home-scene{width:133.33vh;width:133.33svh;min-width:720px;background-position:center 18px;background-size:auto 106%}.home-scene #collection{display:none!important}.home-scene #message.home-dialogue{left:12px;right:12px;width:auto;min-height:112px}}
     .album-detail p{white-space:pre-line}
     .cover.album{background:#10272bc7;backdrop-filter:blur(1px)}
     .album-detail-close{display:none}
@@ -441,6 +441,16 @@
     {speaker:"traveler",portrait:"traveler",text:"……写在背面真的能看到吗。"},
     {text:"你把门往里推了推，再次转动钥匙。咔哒一声，房门打开了。"}
   ];
+  const homeSolidZones=[
+    {x1:5,x2:39,y1:4,y2:32},{x1:20,x2:39,y1:25,y2:40},{x1:8,x2:23,y1:43,y2:63},
+    {x1:29,x2:48,y1:43,y2:69},{x1:52,x2:62,y1:42,y2:72},{x1:5,x2:42,y1:68,y2:82},
+    {x1:38,x2:58,y1:6,y2:34},{x1:59,x2:68,y1:7,y2:31},{x1:67,x2:82,y1:28,y2:58},
+    {x1:83,x2:97,y1:37,y2:76},{x1:75,x2:88,y1:57,y2:72}
+  ];
+  function isHomeWalkable(nextX,nextY){
+    const inMain=nextX>=6&&nextX<=95&&nextY>=34&&nextY<=77,inEntry=nextX>=43&&nextX<=59&&nextY>=72&&nextY<=90;
+    return (inMain||inEntry)&&!homeSolidZones.some(zone=>nextX>=zone.x1&&nextX<=zone.x2&&nextY>=zone.y1&&nextY<=zone.y2);
+  }
   const closeDialogueBeforeHomeArrival=closeDialogueUI;
   closeDialogueUI=function(){closeDialogueBeforeHomeArrival();messageBox.classList.remove("home-dialogue")};
   function showHomeArrivalLine(){
@@ -453,23 +463,30 @@
   function advanceHomeArrival(){
     homeArrivalIndex++;
     if(homeArrivalIndex<homeArrivalDialogue.length){showHomeArrivalLine();return}
-    homeArrivalIndex=-1;homeUnlocked=true;homeQuestStep=Math.max(4,homeQuestStep);eventText="";closeDialogueUI();lookButton.textContent="查看 E";touchLookButton.textContent="查看";game.classList.remove("home-locked");saveGame();render();
+    homeArrivalIndex=-1;homeUnlocked=true;homeQuestStep=Math.max(4,homeQuestStep);eventText="";closeDialogueUI();lookButton.textContent="查看 E";touchLookButton.textContent="查看";game.classList.remove("home-locked");playing=true;saveGame();render();
   }
   function enterHome(resuming=false){
     mapArea="home";closeParkEvent();closeDialogueUI();game.classList.remove("city-map","city-unlocked","school-scene","route-search","route-found","park-event-active");game.classList.add("home-scene","started","resumed");
-    cityTitle.textContent="新住处";citySub.textContent="居民楼二楼";travelerAgeLabel.textContent=travelerAge+" 岁 · 新住处";journeyClock.textContent="10:50";journeyWeather.textContent="晴 · 上午";star.hidden=true;x=50;y=91;playing=false;eventText="";
-    if(resuming&&homeUnlocked){homeArrivalIndex=-1;game.classList.remove("home-locked");saveGame();render()}else{saveGame();startHomeArrival()}
+    cityTitle.textContent="新住处";citySub.textContent="居民楼二楼";travelerAgeLabel.textContent=travelerAge+" 岁 · 新住处";journeyClock.textContent="10:50";journeyWeather.textContent="晴 · 上午";star.hidden=true;x=50;y=88;playing=false;eventText="";
+    if(resuming&&homeUnlocked){homeArrivalIndex=-1;game.classList.remove("home-locked");playing=true;saveGame();render()}else{saveGame();startHomeArrival()}
   }
   const saveBeforeHomeArrival=saveGame;
-  saveGame=function(){saveBeforeHomeArrival();try{const saved=JSON.parse(localStorage.getItem(saveKey)||"{}");saved.homeUnlocked=homeUnlocked;saved.mapArea=mapArea;localStorage.setItem(saveKey,JSON.stringify(saved));savedGame=saved}catch{}};
+  saveGame=function(){saveBeforeHomeArrival();try{const saved=JSON.parse(localStorage.getItem(saveKey)||"{}");saved.homeUnlocked=homeUnlocked;saved.homeIntroVersion=1;saved.mapArea=mapArea;localStorage.setItem(saveKey,JSON.stringify(saved));savedGame=saved}catch{}};
   const restoreBeforeHomeArrival=restoreGame;
-  restoreGame=function(data){homeUnlocked=!!data.homeUnlocked;restoreBeforeHomeArrival(data);if((data.mapArea||"station")==="home")enterHome(true)};
+  restoreGame=function(data){homeUnlocked=Number(data.homeIntroVersion)>=1&&!!data.homeUnlocked;restoreBeforeHomeArrival(data);if((data.mapArea||"station")==="home")enterHome(true)};
   const renderBeforeHomeArrival=render;
   render=function(){
     if(mapArea!=="home"){renderBeforeHomeArrival();return}
-    hint.hidden=true;stationExit.hidden=true;syncHomeQuestUI();journeyClock.textContent="10:50";journeyWeather.textContent="晴 · 上午";
+    girl.style.left=x+"%";girl.style.top=y+"%";girl.style.zIndex=12;girl.style.setProperty("--row",spriteRows[facing]);girl.style.setProperty("--frame",frame);hint.hidden=true;stationExit.hidden=true;syncHomeQuestUI();journeyClock.textContent="10:50";journeyWeather.textContent="晴 · 上午";
     if(homeArrivalIndex>=0||eventText)return;
     text.textContent="房门在身后轻轻合上。日光落进屋里，这里以后就是你在宏景的住处。";text.classList.add("idle");
+  };
+  const moveBeforeHomeArrival=move;
+  move=function(dx,dy){
+    if(mapArea!=="home"){moveBeforeHomeArrival(dx,dy);return}
+    if(dx<0)facing="left";else if(dx>0)facing="right";else if(dy<0)facing="back";else if(dy>0)facing="front";
+    const nextX=Math.max(4,Math.min(96,x+dx)),nextY=Math.max(32,Math.min(90,y+dy));
+    if(isHomeWalkable(nextX,nextY)){x=nextX;y=nextY;queueSave()}render();
   };
   const finishBeforeHomeArrival=finishEvent;
   finishEvent=function(){if(homeArrivalIndex>=0){advanceHomeArrival();return}finishBeforeHomeArrival()};
