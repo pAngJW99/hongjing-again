@@ -66,13 +66,13 @@
     .city-map.route-found .cloud-d,.city-map.route-found .cloud-o,.city-map.route-found .cloud-p,.city-map.route-found .cloud-g{opacity:.08}
     #game.home-map-guide #menuButton,.menu-panel #mapButton.quest-map-button{animation:questPulse 1s steps(2) infinite;background:#f5ce62;color:#284631;font-weight:800}
     @keyframes questPulse{50%{transform:translateY(-3px);box-shadow:0 0 0 5px #f4d36b66,4px 5px 0 #2e442e8c}}
-    .dialogue-portrait.elder{background:#e2c88e url("park-elder-portrait.png") 50% 12%/180% auto no-repeat;font-size:0}.dialogue-portrait.elder:after{content:none}
+    .dialogue-portrait.elder{background:#e2c88e url("park-elder-portrait.png") 50% 6%/135% auto no-repeat;font-size:0}.dialogue-portrait.elder:after{content:none}
     .city-map #message.route-dialogue #look{display:block}.city-map #message.route-dialogue{width:min(760px,calc(100% - 80px));min-height:104px}
     @media(max-width:760px){.city-map #message.route-dialogue{left:12px;right:12px;width:auto;min-height:112px}}
     .park-event{position:absolute;z-index:40;left:50%;top:45%;width:min(900px,82%);max-height:74%;aspect-ratio:1448/965;transform:translate(-50%,-50%);overflow:hidden;border:5px solid #f1df9c;outline:4px solid #6f4b26;background:#284838;box-shadow:0 0 0 9999px #10272baa,9px 10px 0 #132b25}
     .park-event[hidden]{display:none}.park-event img{display:block;width:100%;height:100%;object-fit:cover;image-rendering:pixelated}.park-event-label{position:absolute;left:16px;top:14px;padding:7px 12px;border:3px solid #6f4b26;background:#fff1bded;box-shadow:3px 3px 0 #29402f;color:#214536}.park-event-label small{display:block;color:#8d6030;font-size:10px;letter-spacing:.12em}.park-event-label b{font-size:17px;letter-spacing:.08em}
     .park-event-active #message{z-index:46}.park-event-active .controls{display:none!important}.park-event-active .map-location{pointer-events:none}
-    @media(max-width:760px){.park-event{position:fixed;left:12px;right:12px;top:11vh;width:auto;max-height:none;transform:none}.park-event-label{left:10px;top:10px;padding:5px 9px}.park-event-label b{font-size:14px}.park-event-active #message{bottom:18px}}
+    @media(max-width:760px){.park-event{position:fixed;left:12px;right:12px;top:20vh;width:auto;max-height:none;transform:none}.park-event-label{left:10px;top:10px;padding:5px 9px}.park-event-label b{font-size:14px}.park-event-active #message{bottom:18px}}
     @keyframes cloudDrift{from{translate:-.7% 0}to{translate:.7% -.8%}}
     #game.school-scene{aspect-ratio:1776/887;background-image:url("school-entrance.png");background-size:cover}
     .school-scene #train,.school-scene #star,.school-scene>.paper,.school-scene .map-fog,.school-scene .map-cloud,.school-scene .map-location,.school-scene .city-npc{display:none!important}
@@ -84,6 +84,7 @@
     .album-detail-close{display:none}
     @media(max-width:760px){.album-ticket{display:flex;flex-direction:column;max-height:94vh;padding:18px 14px}.album-ticket>.album-subtitle{margin-bottom:9px}.album-tabs{margin-bottom:10px}.album-workspace{display:block;min-height:0;overflow:hidden}.album-pages{min-height:0;overflow:hidden}.album-grid{max-height:42vh;overflow-y:auto}.album-detail{display:none;position:absolute;z-index:8;inset:90px 12px 68px;min-height:0;padding:16px;overflow-y:auto;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-style:solid;box-shadow:0 0 0 999px #10272b99}.album-detail.mobile-open{display:flex}.album-detail .album-detail-visual{width:92px;height:92px;min-height:92px;margin:0 0 10px;grid-row:auto}.album-detail h3{align-self:auto}.album-detail-close{display:block;margin-top:14px;border:2px solid #29452f;background:#385d3d;color:#fff4cf;padding:9px 16px;cursor:pointer;font-weight:700}.album-close{flex:0 0 auto;margin-top:12px!important}}
     #message{font-size:clamp(13px,1.25vw,18px)}
+    #messageText,#collection,.menu-panel button,.album-detail p,.album-cell span,.dialogue-name,.map-location,.map-place,#stationExit{font-weight:400}
     #preloader{position:fixed;z-index:9999;inset:0;display:grid;place-items:center;padding:24px;background:#173638;color:#fff1bd;opacity:1;visibility:visible;transition:opacity .55s ease,visibility .55s ease}
     #preloader:before{content:"";position:absolute;inset:0;opacity:.18;background:linear-gradient(90deg,transparent 49%,#f2dfa8 50%,transparent 51%) 0 0/48px 48px,linear-gradient(transparent 49%,#f2dfa8 50%,transparent 51%) 0 0/48px 48px}
     #preloader.ready{opacity:0;visibility:hidden;pointer-events:none}
