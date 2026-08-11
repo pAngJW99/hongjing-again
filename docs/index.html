@@ -480,8 +480,8 @@
   restoreGame=function(data){homeUnlocked=Number(data.homeIntroVersion)>=1&&!!data.homeUnlocked;restoreBeforeHomeArrival(data);if((data.mapArea||"station")==="home")enterHome(true)};
   const renderBeforeHomeArrival=render;
   render=function(){
-    if(mapArea!=="home"){renderBeforeHomeArrival();return}
-    girl.style.left=x+"%";girl.style.top=y+"%";girl.style.zIndex=12;girl.style.setProperty("--row",spriteRows[facing]);girl.style.setProperty("--frame",frame);hint.hidden=true;stationExit.hidden=true;syncHomeQuestUI();journeyClock.textContent="10:50";journeyWeather.textContent="晴 · 上午";
+    if(mapArea!=="home"){renderBeforeHomeArrival();girl.style.backgroundPosition=(frame*50)+"% "+(spriteRows[facing]*33.333)+"%";return}
+    girl.style.left=x+"%";girl.style.top=y+"%";girl.style.zIndex=12;girl.style.setProperty("--row",spriteRows[facing]);girl.style.setProperty("--frame",frame);girl.style.backgroundPosition=(frame*50)+"% "+(spriteRows[facing]*33.333)+"%";hint.hidden=true;stationExit.hidden=true;syncHomeQuestUI();journeyClock.textContent="10:50";journeyWeather.textContent="晴 · 上午";
     if(homeArrivalIndex>=0||eventText){text.textContent=eventText;text.classList.remove("idle");return}
     text.textContent="房门在身后轻轻合上。日光落进屋里，这里以后就是你在宏景的住处。";text.classList.add("idle");
   };
