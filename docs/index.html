@@ -86,9 +86,36 @@
     .eyebrow,.subtitle,#clock{font-family:"Microsoft YaHei",sans-serif}
     #message{font-size:clamp(13px,1.25vw,18px)}
     #messageText,.menu-panel button,#collection,.album-detail p,.album-cell span{font-weight:600}
+    #preloader{position:fixed;z-index:9999;inset:0;display:grid;place-items:center;padding:24px;background:#173638;color:#fff1bd;opacity:1;visibility:visible;transition:opacity .55s ease,visibility .55s ease}
+    #preloader:before{content:"";position:absolute;inset:0;opacity:.18;background:linear-gradient(90deg,transparent 49%,#f2dfa8 50%,transparent 51%) 0 0/48px 48px,linear-gradient(transparent 49%,#f2dfa8 50%,transparent 51%) 0 0/48px 48px}
+    #preloader.ready{opacity:0;visibility:hidden;pointer-events:none}
+    .loader-ticket{position:relative;width:min(520px,92vw);padding:34px 32px 30px;border:4px solid #6f4b26;background:#fff2cb;color:#173a30;box-shadow:8px 8px 0 #0c2526,0 0 0 6px #e5c98f;text-align:center}
+    .loader-ticket:before,.loader-ticket:after{content:"✦";position:absolute;color:#b58a42;font-size:20px}.loader-ticket:before{left:16px;top:12px}.loader-ticket:after{right:16px;bottom:10px}
+    .loader-kicker{margin-bottom:8px;color:#8d6030;font-family:"Microsoft YaHei",sans-serif;font-size:11px;font-weight:400;letter-spacing:.24em}
+    .loader-title{margin:0 0 5px;font-size:clamp(26px,6vw,40px);letter-spacing:.12em}.loader-status{margin:0 0 20px;color:#785a38;font-size:14px;min-height:1.5em}
+    .loader-track{position:relative;height:24px;padding:4px;border:3px solid #6f4b26;background:#d9bf88;box-shadow:inset 2px 2px #a98858;overflow:hidden}
+    .loader-bar{height:100%;width:0;background:repeating-linear-gradient(90deg,#385d3d 0 18px,#416c47 18px 36px);transition:width .14s linear}
+    .loader-rail{position:relative;height:22px;margin-top:10px;border-bottom:4px double #745333;overflow:hidden}
+    .loader-train{position:absolute;left:-72px;bottom:3px;width:68px;height:15px;border:2px solid #173a30;border-radius:7px 10px 2px 2px;background:#3e6b48;box-shadow:inset 0 4px #d8d0b6;animation:loaderTrain 4.2s linear infinite}
+    .loader-train:before{content:"";position:absolute;left:9px;top:4px;width:8px;height:5px;background:#b9d1bd;box-shadow:15px 0 #b9d1bd,30px 0 #b9d1bd,45px 0 #b9d1bd}.loader-train:after{content:"";position:absolute;left:8px;bottom:-6px;width:7px;height:7px;border-radius:50%;background:#283832;box-shadow:42px 0 #283832}
+    .loader-meta{display:flex;justify-content:space-between;margin-top:8px;color:#8d6030;font-family:"Microsoft YaHei",sans-serif;font-size:11px;font-weight:400;letter-spacing:.08em}
+    @keyframes loaderTrain{to{left:calc(100% + 8px)}}
+    @media(max-width:620px){.loader-ticket{padding:30px 22px 25px}.loader-title{font-size:30px}.loader-status{font-size:13px}}
+    @media(prefers-reduced-motion:reduce){.loader-train{animation:none;left:calc(50% - 34px)}#preloader{transition:none}}
   </style>
 </head>
 <body>
+<div id="preloader" role="progressbar" aria-label="正在加载宏景" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+  <div class="loader-ticket">
+    <div class="loader-kicker">HONG JING · AGAIN</div>
+    <h1 class="loader-title">正在抵达宏景</h1>
+    <p id="loadingStatus" class="loader-status">正在清点行李……</p>
+    <div class="loader-track"><div id="loadingBar" class="loader-bar"></div></div>
+    <div class="loader-rail"><span class="loader-train"></span></div>
+    <div class="loader-meta"><span>旅途准备中</span><b id="loadingPercent">0%</b></div>
+  </div>
+</div>
+<noscript><style>#preloader{display:none}</style></noscript>
 <main><section id="game" aria-label="宏景火车站互动场景">
   <section id="arrival" class="cover" aria-label="再见宏景">
     <div class="ticket"><div class="eyebrow">A JOURNEY BEGINS</div><h1 class="hero-title">再见宏景</h1><p class="subtitle">HONG JING · AGAIN</p><button id="enterJourney" class="stamp-button">踏 上 站 台　→</button></div>
@@ -392,6 +419,26 @@
     interactBeforeFreeStationCollect();
   };
   addEventListener("load",()=>{syncHomeQuestUI();render()});
+</script>
+<script>
+  (()=>{
+    const overlay=document.querySelector("#preloader"),bar=document.querySelector("#loadingBar"),percent=document.querySelector("#loadingPercent"),status=document.querySelector("#loadingStatus");
+    if(!overlay||!bar||!percent||!status)return;
+    const listed=["hongjing-station.png","traveler-walk.png","green-train.png","hongjing-map-v2.png","hongjing-mist.png","hongjing-stamp.png","star-note.png","school-entrance.png","lin-wanxing.png","lin-wanxing-portrait.png","traveler-portrait.png"],domImages=[...document.images].map(image=>image.getAttribute("src")).filter(Boolean),sources=[...new Set([...listed,...domImages])];
+    const started=performance.now(),minimum=700;let completed=0,actual=2,shown=0,closing=false,removed=false;
+    const update=()=>{
+      const elapsed=performance.now()-started,waiting=Math.min(84,elapsed/115),target=closing?100:Math.max(actual,waiting);
+      shown=Math.min(target,shown+Math.max(.35,(target-shown)*.16));
+      const rounded=Math.min(100,Math.round(shown));bar.style.width=rounded+"%";percent.textContent=rounded+"%";overlay.setAttribute("aria-valuenow",String(rounded));
+      status.textContent=rounded<28?"正在清点行李……":rounded<58?"列车即将进站……":rounded<86?"正在展开宏景地图……":"准备踏上站台……";
+      if(closing&&shown>=99.5&&!removed){removed=true;bar.style.width="100%";percent.textContent="100%";overlay.setAttribute("aria-valuenow","100");status.textContent="欢迎回到宏景。";setTimeout(()=>overlay.classList.add("ready"),260);setTimeout(()=>overlay.remove(),950)}
+    };
+    const timer=setInterval(update,70),settled=()=>{completed++;actual=2+completed/(sources.length+1)*90};
+    const imageTasks=sources.map(source=>new Promise(resolve=>{const image=new Image();image.onload=image.onerror=()=>resolve();image.src=source}).finally(settled));
+    const fontTask=(document.fonts?document.fonts.load('600 18px "HomeworkCJK"'):Promise.resolve()).catch(()=>{}).finally(settled);
+    const finish=()=>{if(closing)return;const wait=Math.max(0,minimum-(performance.now()-started));setTimeout(()=>{closing=true;actual=100;update();setTimeout(()=>clearInterval(timer),1800)},wait)};
+    Promise.allSettled([...imageTasks,fontTask]).then(finish);setTimeout(finish,18000);update();
+  })();
 </script>
 </body>
 </html>
