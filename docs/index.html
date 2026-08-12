@@ -80,9 +80,9 @@
     #collection .school-task{opacity:.72;color:#7b5832;font-size:12px}#collection .school-task.task-done{opacity:1;color:#3f663f}
     @media(max-width:760px){#game.school-scene{width:200.2vh;min-width:860px;background-size:auto 100%}.school-npc{width:35px;height:90px}#message.dialogue{width:calc(100vw - 24px);min-height:112px}.dialogue-speaker{flex-basis:68px;padding-right:8px}.dialogue-portrait{width:50px;height:50px}}
     #game.home-scene{aspect-ratio:1448/1086;background-color:#030604;background-image:url("new-home.png");background-position:center;background-size:112% auto;background-repeat:no-repeat}
-    .home-scene #train,.home-scene #star,.home-scene>.paper,.home-scene .map-fog,.home-scene .map-cloud,.home-scene .map-location,.home-scene .city-npc,.home-scene .school-npc{display:none!important}.home-scene #girl{display:block}.home-scene.home-locked .controls{display:none!important}
+    .home-scene #train,.home-scene #star,.home-scene>.paper,.home-scene .map-fog,.home-scene .map-cloud,.home-scene .map-location,.home-scene .city-npc,.home-scene .school-npc{display:none!important}.home-scene #girl{display:block;width:37px;height:64px}.home-scene.home-locked .controls{display:none!important}
     #game.home-scene:before{content:"";position:absolute;z-index:18;inset:0;background:#020403;opacity:0;pointer-events:none;transition:opacity 1.5s ease}#game.home-scene.home-locked:before{opacity:1}.home-scene #message{z-index:22}.home-scene #message.home-dialogue{width:min(760px,calc(100% - 80px));min-height:104px}
-    @media(max-width:760px){#game.home-scene{width:133.33vh;width:133.33svh;min-width:720px;background-position:center;background-size:auto 114%}.home-scene #collection{display:none!important}.home-scene #message.home-dialogue{left:12px;right:12px;width:auto;min-height:112px}}
+    @media(max-width:760px){#game.home-scene{width:133.33vh;width:133.33svh;min-width:720px;background-position:center;background-size:auto 114%}.home-scene #girl{width:34px;height:59px}.home-scene #collection{display:none!important}.home-scene #message.home-dialogue{left:12px;right:12px;width:auto;min-height:112px}}
     @media(max-width:760px){#game.home-scene.home-locked #message #look{display:block;flex:0 0 auto}}
     .test-only[hidden]{display:none!important}.test-launch{margin-top:18px;border:0;border-bottom:1px dashed #987044;background:transparent;color:#77542f;padding:7px 12px;cursor:pointer;font-size:12px;letter-spacing:.12em}.test-entry{z-index:92}.test-ticket{width:min(640px,94%);max-height:92vh;overflow:auto;text-align:left}.test-ticket h2{text-align:center;margin:5px 0 8px;color:#193c31}.test-note{text-align:center;color:#805c35;font-size:13px;line-height:1.7;margin:0 0 16px}.test-route-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.test-route{border:2px solid #765535;background:#f3dfaa;color:#29452f;padding:12px;text-align:left;cursor:pointer;box-shadow:2px 2px 0 #314631}.test-route b{display:block;margin-bottom:3px}.test-route small{color:#7b5937}.test-actions{display:flex;gap:9px;margin-top:16px}.test-actions button{flex:1}.test-secondary{border:2px solid #765535;background:#dbc28b;color:#594126;padding:10px;cursor:pointer}.menu-panel #testEntryButton{color:#9a4c31}
     @media(max-width:620px){.test-route-grid{grid-template-columns:1fr}.test-ticket{padding:22px 18px}.test-actions{flex-direction:column}}
@@ -463,23 +463,31 @@
     {x1:5.5,x2:27.8,y1:67.2,y2:76.8},{x1:28.1,x2:33.3,y1:68,y2:76.5},
     {x1:34.6,x2:39.7,y1:65.7,y2:72.4},{x1:53.2,x2:60.3,y1:68.2,y2:79.5},
     // 卫生间设施及墙体，门口保留一条通道。
-    {x1:38,x2:44.5,y1:8.5,y2:31.2},{x1:44.5,x2:57.2,y1:8.5,y2:24.7},
-    {x1:49.2,x2:56.2,y1:24.7,y2:34.3},{x1:53.5,x2:58,y1:31.5,y2:39},
-    {x1:38,x2:44.2,y1:34.2,y2:38.7},{x1:50.5,x2:57.5,y1:34.2,y2:38.7},
+    {x1:38.4,x2:43.5,y1:8.5,y2:29.5},{x1:45,x2:50.8,y1:9,y2:22.8},
+    {x1:50.8,x2:55.3,y1:23.5,y2:32.2},{x1:53.5,x2:57.5,y1:32,y2:38.2},
+    {x1:38,x2:43.5,y1:34.8,y2:38.7},{x1:51.2,x2:57.5,y1:34.8,y2:38.7},
     // 卧室：衣柜、床、书桌、书架分别设墙；门和床尾都有通路。
-    {x1:57,x2:68.2,y1:9.5,y2:33.5},{x1:69,x2:87.8,y1:10.5,y2:30.5},
-    {x1:66.2,x2:79.8,y1:27.8,y2:54.7},{x1:61.7,x2:71.6,y1:53.5,y2:64.2},
-    {x1:76.2,x2:85.2,y1:54.5,y2:67.7},{x1:57,x2:60.2,y1:46.5,y2:68},
+    {x1:57.5,x2:66.8,y1:9.5,y2:31.5},{x1:79.8,x2:87.8,y1:11,y2:29.5},
+    {x1:68,x2:79.5,y1:28.2,y2:52.7},{x1:62,x2:70.5,y1:54,y2:61.5},
+    {x1:77,x2:84.5,y1:55,y2:64.5},{x1:57,x2:59.4,y1:48,y2:68},
     // 阳台：开放门口与左侧走道，仅挡花架和小桌椅本身。
     {x1:83,x2:87.8,y1:31,y2:36.5},{x1:83,x2:87.3,y1:57.5,y2:68},
     {x1:89.2,x2:96.8,y1:32.5,y2:43.5},{x1:87.7,x2:94.3,y1:45.2,y2:57.8},
     {x1:92.2,x2:97,y1:57.5,y2:77.5}
   ];
+  const homePassageZones=[
+    {x1:43.5,x2:51.2,y1:30.2,y2:42.2}, // 卫生间门洞与门内落脚处
+    {x1:43.5,x2:49.8,y1:23,y2:35},      // 浴室中央过道
+    {x1:59.4,x2:67.2,y1:40,y2:68},      // 卧室门口到床侧
+    {x1:60,x2:76.5,y1:62,y2:68},        // 卧室床尾横向通道
+    {x1:64.5,x2:68,y1:32,y2:55}         // 床左侧纵向通道
+  ];
   function isHomeWalkable(nextX,nextY){
     const scale=matchMedia("(max-width:760px)").matches?1.14:1.12;
     const sourceX=(nextX-50)/scale+50,sourceY=(nextY-50)/scale+50;
     const inside=homeWalkAreas.some(area=>sourceX>=area.x1&&sourceX<=area.x2&&sourceY>=area.y1&&sourceY<=area.y2);
-    return inside&&!homeSolidZones.some(zone=>sourceX>=zone.x1&&sourceX<=zone.x2&&sourceY>=zone.y1&&sourceY<=zone.y2);
+    const passage=homePassageZones.some(zone=>sourceX>=zone.x1&&sourceX<=zone.x2&&sourceY>=zone.y1&&sourceY<=zone.y2);
+    return inside&&(passage||!homeSolidZones.some(zone=>sourceX>=zone.x1&&sourceX<=zone.x2&&sourceY>=zone.y1&&sourceY<=zone.y2));
   }
   const closeDialogueBeforeHomeArrival=closeDialogueUI;
   closeDialogueUI=function(){closeDialogueBeforeHomeArrival();messageBox.classList.remove("home-dialogue")};
