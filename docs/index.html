@@ -28,7 +28,7 @@
     @media(max-width:760px){main{display:block;overflow-x:auto;overflow-y:hidden;padding:0;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;touch-action:pan-x}#game{width:198.5vh;min-width:860px;height:100%;aspect-ratio:auto;border:0;border-radius:0;background-size:auto 100%;scroll-snap-align:start}header{position:fixed;inset:12px 12px auto}.title{padding:6px 9px}.title b{font-size:18px}.time-card{padding:5px 8px}.time-card span{font-size:18px}.time-card b{font-size:14px}.menu-button{padding:6px 9px}#collection{position:fixed;left:auto;right:12px;top:76px;width:175px}#message{position:fixed;left:12px;bottom:166px;transform:none;width:calc(100vw - 24px)}#hint{position:fixed;left:50%;bottom:246px}.controls{position:fixed;display:flex;left:16px;right:16px;bottom:14px}#girl{width:51px;height:88px}.cover{position:fixed;width:100vw;min-width:0}.ticket{max-width:430px;padding:28px 24px}.hero-title{font-size:42px}.form-ticket{max-height:94vh;overflow:auto}.menu-panel{position:fixed;right:12px;top:68px}}
     @media(max-width:760px){.top-actions{gap:8px}.time-card{width:136px}#collection{right:12px;width:184px}#message{padding-right:14px}#message #look{display:none}.immersive-exit{position:fixed;right:12px;top:12px;z-index:60}}
     /* Only the reward-screen star is smaller; the map pickup stays unchanged. */
-    .reveal-art.note{width:95px;height:75px;background-size:150%}.album-detail-visual.bone,.cell-icon.bone,.reveal-art.bone{background-image:url("home-bone.png");background-repeat:no-repeat;image-rendering:pixelated}.album-detail-visual.bone{background-size:520%;background-position:40% 42%}.cell-icon.bone{background-size:520%;background-position:40% 42%}.reveal-art.bone{width:150px;height:100px;background-size:480%;background-position:40% 42%}
+    .reveal-art.note{width:95px;height:75px;background-size:150%}.item-reveal{background:#10272bbd}.album-detail-visual.bone,.cell-icon.bone,.reveal-art.bone{background-image:url("home-bone-icon.png");background-repeat:no-repeat;background-position:center;background-size:contain;image-rendering:pixelated}.reveal-art.bone{width:150px;height:100px}
     /* 宏景大地图：第一段只引导前往八中，其他街区仍停留在云雾里。 */
     #game.city-map{aspect-ratio:1484/865;background-image:url("hongjing-map-v2.png");background-size:cover}
     .city-map #train,.city-map>.paper,.city-map #star{display:none}
@@ -183,7 +183,7 @@
     {title:"星形便签",icon:"star",unlocked:()=>note,text:"愿你在再次抵达之际，也从未遗忘那颗星。"},
     {title:"住处钥匙",icon:"key",unlocked:()=>schoolMet,text:"林晚星交给你的钥匙。钥匙圈上贴着一小条褪色的胶布。"},
     {title:"林晚星的纸条",icon:"paper",unlocked:()=>schoolMet,text:"纸上写着去往住处的路线，以及热水器和门锁的用法。"},
-    {title:"小小的骨头",icon:"bone",unlocked:()=>typeof homeBoneCollected!=="undefined"&&homeBoneCollected,text:"在新住处地板上捡到的小骨头。看起来属于那位正在熟睡的住户。"},
+    {title:"蓝色玩具骨头",icon:"bone",unlocked:()=>typeof homeBoneCollected!=="undefined"&&homeBoneCollected,text:"在新住处地板上捡到的玩具骨头。软软的，边角留着一点被小狗咬过的痕迹。"},
     ...Array.from({length:7},()=>({title:"尚未发现",icon:"",unlocked:()=>false,text:"这里还空着，等待下一件小小纪念品。"}))
   ];
   function clearAlbumSelection(){document.querySelectorAll(".album-cell.selected").forEach(cell=>cell.classList.remove("selected"))}
@@ -230,8 +230,8 @@
 <script>
   let pendingCollect="";
   const itemReveal=document.querySelector("#itemReveal"),revealArt=document.querySelector("#revealArt"),revealTitle=document.querySelector("#revealTitle"),revealText=document.querySelector("#revealText");
-  function revealItem(type){const info={stamp:["回到宏景","宏景火车站 · 地点邮戳"],note:["星形便签","愿你在再次抵达之际，也从未遗忘那颗星。"],bone:["小小的骨头","看起来属于房间里那位正在熟睡的住户。"]}[type];pendingCollect=type;playing=false;revealArt.className="reveal-art "+type;revealTitle.textContent=info[0];revealText.textContent=info[1];itemReveal.hidden=false}
-  document.querySelector("#archiveItem").onclick=()=>{const type=pendingCollect;pendingCollect="";itemReveal.hidden=true;playing=true;showEvent(type==="stamp"?"站台邮戳已收集：回到宏景。已放入收藏册。":type==="bone"?"小小的骨头已放入收藏册。":"便签：愿你在再次抵达之际，也从未遗忘那颗星。")};
+  function revealItem(type){const info={stamp:["回到宏景","宏景火车站 · 地点邮戳"],note:["星形便签","愿你在再次抵达之际，也从未遗忘那颗星。"],bone:["蓝色玩具骨头","软软的玩具骨头，看起来属于房间里那位正在熟睡的住户。"]}[type];pendingCollect=type;playing=false;revealArt.className="reveal-art "+type;revealTitle.textContent=info[0];revealText.textContent=info[1];itemReveal.hidden=false}
+  document.querySelector("#archiveItem").onclick=()=>{const type=pendingCollect;pendingCollect="";itemReveal.hidden=true;playing=true;showEvent(type==="stamp"?"站台邮戳已收集：回到宏景。已放入收藏册。":type==="bone"?"蓝色玩具骨头已放入收藏册。":"便签：愿你在再次抵达之际，也从未遗忘那颗星。")};
   interact=function(){const nearHall=Math.abs(x-18)<5&&Math.abs(y-64)<7,nearBench=Math.abs(x-60)<6&&Math.abs(y-64)<7,nearShop=Math.abs(x-80)<6&&Math.abs(y-64)<7;if(storyStep>=2&&!note&&Math.abs(x-66)<4.5&&Math.abs(y-64)<7){note=true;star.remove();noteState.textContent="★ 星形便签";noteState.className="yes";storyStep=3;saveGame();revealItem("note")}else if(storyStep>=1&&!stamp&&Math.abs(x-49)<4.5&&Math.abs(y-64)<7){stamp=true;stampState.textContent="◉ 回到宏景";stampState.className="yes";star.hidden=false;storyStep=2;saveGame();revealItem("stamp")}else if(nearHall){showEvent("候车大厅：有些老旧的候车大厅，出站口就在另一头。")}else if(nearBench){showEvent("长椅：掉了些漆的长椅，等车的人总爱在这里歇一会儿。")}else if(nearShop){showEvent("小卖部：卖水、泡面和两块钱一根的烤肠，火车进站时最热闹。")}else render()};
 </script>
 <script>
@@ -492,11 +492,14 @@
     {x1:92.2,x2:97,y1:57.5,y2:77.5}
   ];
   const homePassageZones=[
+    {x1:5.2,x2:19.2,y1:27.3,y2:42},     // 厨房左侧地垫
+    {x1:37.2,x2:44.2,y1:27.3,y2:42},    // 冰箱旁地垫
     {x1:43.5,x2:51.2,y1:30.2,y2:42.2}, // 卫生间门洞与门内落脚处
-    {x1:43.5,x2:49.8,y1:23,y2:35},      // 浴室中央过道
+    {x1:43.3,x2:53.4,y1:23,y2:38.7},    // 卫生间中央地面
     {x1:59.4,x2:67.2,y1:40,y2:68},      // 卧室门口到床侧
     {x1:60,x2:76.5,y1:62,y2:68},        // 卧室床尾横向通道
     {x1:64.5,x2:68,y1:32,y2:55},        // 床左侧纵向通道
+    {x1:67,x2:84.8,y1:52.8,y2:65},      // 卧室床尾地毯
     {x1:74,x2:84.8,y1:64.2,y2:68.5},    // 床尾通往阳台门边
     {x1:82,x2:89.5,y1:39,y2:68.5}       // 卧室右侧门洞与阳台入口
   ];
@@ -614,7 +617,7 @@
   (()=>{
     const overlay=document.querySelector("#preloader"),bar=document.querySelector("#loadingBar"),percent=document.querySelector("#loadingPercent"),status=document.querySelector("#loadingStatus");
     if(!overlay||!bar||!percent||!status)return;
-    const sources=["hongjing-station.png","traveler-walk.png","green-train.png","hongjing-stamp.png","star-note.png","new-home.png","home-dog.png","home-bone.png"];
+    const sources=["hongjing-station.png","traveler-walk.png","green-train.png","hongjing-stamp.png","star-note.png","new-home.png","home-dog.png","home-bone.png","home-bone-icon.png"];
     const started=performance.now(),minimum=700;let completed=0,actual=2,shown=0,closing=false,removed=false;
     const update=()=>{
       const elapsed=performance.now()-started,waiting=Math.min(84,elapsed/115),target=closing?100:Math.max(actual,waiting);
