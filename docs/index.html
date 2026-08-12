@@ -492,16 +492,14 @@
     {x1:92.2,x2:97,y1:57.5,y2:77.5}
   ];
   const homePassageZones=[
-    {x1:5.2,x2:19.2,y1:27.3,y2:42},     // 厨房左侧地垫
-    {x1:37.2,x2:44.2,y1:27.3,y2:42},    // 冰箱旁地垫
-    {x1:43.5,x2:51.2,y1:30.2,y2:42.2}, // 卫生间门洞与门内落脚处
-    {x1:43.3,x2:53.4,y1:23,y2:38.7},    // 卫生间中央地面
-    {x1:59.4,x2:67.2,y1:40,y2:68},      // 卧室门口到床侧
-    {x1:60,x2:76.5,y1:62,y2:68},        // 卧室床尾横向通道
-    {x1:64.5,x2:68,y1:32,y2:55},        // 床左侧纵向通道
-    {x1:67,x2:84.8,y1:52.8,y2:65},      // 卧室床尾地毯
-    {x1:74,x2:84.8,y1:64.2,y2:68.5},    // 床尾通往阳台门边
-    {x1:82,x2:89.5,y1:39,y2:68.5}       // 卧室右侧门洞与阳台入口
+    {x1:5,x2:19.5,y1:27,y2:43},          // 厨房左侧地垫
+    {x1:36.5,x2:45,y1:27,y2:43},         // 冰箱前地垫与客厅连接处
+    {x1:38,x2:57.5,y1:33,y2:43},         // 客厅通往卫生间的整条门口
+    {x1:42.5,x2:54,y1:20,y2:39},         // 卫生间中央可见地面
+    {x1:59,x2:68,y1:35,y2:69},           // 卧室左侧完整走廊
+    {x1:64,x2:88.8,y1:52,y2:69},         // 卧室床尾地毯至阳台
+    {x1:81,x2:90,y1:34,y2:69},           // 卧室右侧与阳台门洞
+    {x1:83,x2:90,y1:34,y2:72}            // 阳台入口落脚区
   ];
   function isHomeWalkable(nextX,nextY){
     const scale=matchMedia("(max-width:760px)").matches?1.14:1.12;
@@ -547,7 +545,7 @@
   move=function(dx,dy){
     if(mapArea!=="home"){moveBeforeHomeArrival(dx,dy);return}
     if(dx<0)facing="left";else if(dx>0)facing="right";else if(dy<0)facing="back";else if(dy>0)facing="front";
-    const nextX=Math.max(4,Math.min(96,x+dx)),nextY=Math.max(32,Math.min(90,y+dy));
+    const nextX=Math.max(4,Math.min(96,x+dx)),nextY=Math.max(8,Math.min(90,y+dy));
     if(isHomeWalkable(nextX,nextY)){x=nextX;y=nextY;promptPaused=false;queueSave()}render();
   };
   const interactBeforeHomeObjects=interact;
