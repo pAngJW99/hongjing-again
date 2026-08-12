@@ -79,11 +79,11 @@
     .school-npc{display:none;position:absolute;z-index:11;left:48%;top:64%;width:38px;height:98px;padding:0;border:0;background:url("lin-wanxing.png") center/contain no-repeat;filter:drop-shadow(2px 3px #24412b88);transform:translate(-50%,-100%);image-rendering:pixelated;cursor:pointer}.school-scene .school-npc{display:block}.school-npc[hidden]{display:none!important}.school-npc:after{content:"!";position:absolute;left:50%;top:-19px;transform:translateX(-50%);width:17px;height:17px;border:2px solid #79552e;background:#fff1bd;color:#b54a35;font-weight:900;line-height:13px;box-shadow:2px 2px 0 #314631}
     #collection .school-task{opacity:.72;color:#7b5832;font-size:12px}#collection .school-task.task-done{opacity:1;color:#3f663f}
     @media(max-width:760px){#game.school-scene{width:200.2vh;min-width:860px;background-size:auto 100%}.school-npc{width:35px;height:90px}#message.dialogue{width:calc(100vw - 24px);min-height:112px}.dialogue-speaker{flex-basis:68px;padding-right:8px}.dialogue-portrait{width:50px;height:50px}}
-    #game.home-scene{aspect-ratio:1448/1086;background-color:#030604;background-image:url("new-home.png");background-position:center;background-size:112% auto;background-repeat:no-repeat}
+    #game.home-scene{aspect-ratio:1774/887;background-color:#030604;background-image:url("new-home-wide.png");background-position:center;background-size:100% 100%;background-repeat:no-repeat}
     .home-scene #train,.home-scene #star,.home-scene>.paper,.home-scene .map-fog,.home-scene .map-cloud,.home-scene .map-location,.home-scene .city-npc,.home-scene .school-npc{display:none!important}.home-scene #girl{display:block;width:37px;height:64px}.home-scene.home-locked .controls{display:none!important}
-    .home-object{display:none;position:absolute;z-index:11;inset:0;pointer-events:none;background-position:center;background-size:112% auto;background-repeat:no-repeat;image-rendering:pixelated}.home-scene .home-object{display:block}.home-dog{background-image:url("home-dog.png")}.home-bone{background-image:url("home-bone.png")}.home-bone.collected{display:none!important}
+    .home-object{display:none;position:absolute;z-index:11;inset:0;pointer-events:none;background-position:50.1% 19.5%;background-size:80.66% 119.6%;background-repeat:no-repeat;image-rendering:pixelated}.home-scene .home-object{display:block}.home-dog{background-image:url("home-dog.png")}.home-bone{background-image:url("home-bone.png")}.home-bone.collected{display:none!important}
     #game.home-scene:before{content:"";position:absolute;z-index:18;inset:0;background:#020403;opacity:0;pointer-events:none;transition:opacity 1.5s ease}#game.home-scene.home-locked:before{opacity:1}.home-scene #message{z-index:22}.home-scene #message.home-dialogue{width:min(760px,calc(100% - 80px));min-height:104px}
-    @media(max-width:760px){#game.home-scene{width:133.33vh;width:133.33svh;min-width:720px;background-position:center;background-size:auto 114%}.home-scene .home-object{background-size:auto 114%}.home-scene #girl{width:34px;height:59px}.home-scene #collection{display:none!important}.home-scene #message.home-dialogue{left:12px;right:12px;width:auto;min-height:112px}}
+    @media(max-width:760px){#game.home-scene{width:200vh;width:200svh;min-width:960px;background-position:center;background-size:100% 100%}.home-scene .home-object{background-position:50.1% 19.5%;background-size:80.66% 119.6%}.home-scene #girl{width:34px;height:59px}.home-scene #collection{display:none!important}.home-scene #message.home-dialogue{left:12px;right:12px;width:auto;min-height:112px}}
     @media(max-width:760px){#game.home-scene.home-locked #message #look{display:block;flex:0 0 auto}}
     .test-only[hidden]{display:none!important}.test-launch{margin-top:18px;border:0;border-bottom:1px dashed #987044;background:transparent;color:#77542f;padding:7px 12px;cursor:pointer;font-size:12px;letter-spacing:.12em}.test-entry{z-index:92}.test-ticket{width:min(640px,94%);max-height:92vh;overflow:auto;text-align:left}.test-ticket h2{text-align:center;margin:5px 0 8px;color:#193c31}.test-note{text-align:center;color:#805c35;font-size:13px;line-height:1.7;margin:0 0 16px}.test-route-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.test-route{border:2px solid #765535;background:#f3dfaa;color:#29452f;padding:12px;text-align:left;cursor:pointer;box-shadow:2px 2px 0 #314631}.test-route b{display:block;margin-bottom:3px}.test-route small{color:#7b5937}.test-actions{display:flex;gap:9px;margin-top:16px}.test-actions button{flex:1}.test-secondary{border:2px solid #765535;background:#dbc28b;color:#594126;padding:10px;cursor:pointer}.menu-panel #testEntryButton{color:#9a4c31}
     @media(max-width:620px){.test-route-grid{grid-template-columns:1fr}.test-ticket{padding:22px 18px}.test-actions{flex-direction:column}}
@@ -448,8 +448,15 @@
     {id:"bed",x:73,y:49,r:7,prompt:"床铺已经收拾好了。按 E 或点击“查看”。",text:"床铺松软而整洁，枕边还留着一点晒过太阳的味道。"},
     {id:"balcony",x:89,y:53,r:6,prompt:"阳台上摆满了植物。按 E 或点击“查看”。",text:"阳台：大大小小的花盆挤在一起，叶片被风吹得轻轻摇晃。"}
   ];
+  const homeWideTransform={left:9.695,top:-3.833,width:80.66,height:119.6};
+  function homeDisplayToSource(displayX,displayY){
+    return {sourceX:(displayX-homeWideTransform.left)/homeWideTransform.width*100,sourceY:(displayY-homeWideTransform.top)/homeWideTransform.height*100};
+  }
+  function homeSourceToDisplay(sourceX,sourceY){
+    return {displayX:homeWideTransform.left+sourceX*homeWideTransform.width/100,displayY:homeWideTransform.top+sourceY*homeWideTransform.height/100};
+  }
   function getHomeInteraction(){
-    const scale=matchMedia("(max-width:760px)").matches?1.14:1.12,sourceX=(x-50)/scale+50,sourceY=(y-50)/scale+50;
+    const {sourceX,sourceY}=homeDisplayToSource(x,y);
     return homeInteractions.find(item=>(item.id!=="bone"||!homeBoneCollected)&&Math.hypot(sourceX-item.x,sourceY-item.y)<=item.r);
   }
   const homeArrivalDialogue=[
@@ -502,11 +509,11 @@
     {x1:83,x2:90,y1:34,y2:56}            // 阳台入口落脚区
   ];
   function isHomeWalkable(nextX,nextY){
-    const scale=matchMedia("(max-width:760px)").matches?1.14:1.12;
-    const sourceX=(nextX-50)/scale+50,sourceY=(nextY-50)/scale+50;
+    const {sourceX,sourceY}=homeDisplayToSource(nextX,nextY);
+    const tableToFridgeFloor=sourceX>=34&&sourceX<=48&&sourceY>=25.5&&sourceY<=44;
     const inside=homeWalkAreas.some(area=>sourceX>=area.x1&&sourceX<=area.x2&&sourceY>=area.y1&&sourceY<=area.y2);
     const passage=homePassageZones.some(zone=>sourceX>=zone.x1&&sourceX<=zone.x2&&sourceY>=zone.y1&&sourceY<=zone.y2);
-    return inside&&(passage||!homeSolidZones.some(zone=>sourceX>=zone.x1&&sourceX<=zone.x2&&sourceY>=zone.y1&&sourceY<=zone.y2));
+    return inside&&(tableToFridgeFloor||passage||!homeSolidZones.some(zone=>sourceX>=zone.x1&&sourceX<=zone.x2&&sourceY>=zone.y1&&sourceY<=zone.y2));
   }
   const closeDialogueBeforeHomeArrival=closeDialogueUI;
   closeDialogueUI=function(){closeDialogueBeforeHomeArrival();messageBox.classList.remove("home-dialogue")};
@@ -524,7 +531,7 @@
   }
   function enterHome(resuming=false){
     mapArea="home";closeParkEvent();closeDialogueUI();game.classList.remove("city-map","city-unlocked","school-scene","route-search","route-found","park-event-active");game.classList.add("home-scene","started","resumed");
-    cityTitle.textContent="新住处";citySub.textContent="居民楼二楼";travelerAgeLabel.textContent=travelerAge+" 岁 · 新住处";journeyClock.textContent="10:50";journeyWeather.textContent="晴 · 上午";star.hidden=true;x=50;y=88;playing=false;eventText="";
+    cityTitle.textContent="新住处";citySub.textContent="居民楼二楼";travelerAgeLabel.textContent=travelerAge+" 岁 · 新住处";journeyClock.textContent="10:50";journeyWeather.textContent="晴 · 上午";star.hidden=true;({displayX:x,displayY:y}=homeSourceToDisplay(50,88));playing=false;eventText="";
     if(resuming&&homeUnlocked){homeArrivalIndex=-1;game.classList.remove("home-locked");playing=true;eventText=homeMessageDismissed?"":homeExplorePrompt;messageBox.hidden=homeMessageDismissed;saveGame();render()}else{saveGame();startHomeArrival()}
   }
   const saveBeforeHomeArrival=saveGame;
@@ -535,6 +542,7 @@
   render=function(){
     if(mapArea!=="home"){messageBox.hidden=false;renderBeforeHomeArrival();girl.style.backgroundPosition=(frame*50)+"% "+(spriteRows[facing]*33.333)+"%";return}
     girl.style.left=x+"%";girl.style.top=y+"%";girl.style.zIndex=12;girl.style.setProperty("--row",spriteRows[facing]);girl.style.setProperty("--frame",frame);girl.style.backgroundPosition=(frame*50)+"% "+(spriteRows[facing]*33.333)+"%";homeBone.classList.toggle("collected",homeBoneCollected);hint.hidden=true;stationExit.hidden=true;syncHomeQuestUI();journeyClock.textContent="10:50";journeyWeather.textContent="晴 · 上午";
+    if(matchMedia("(max-width:760px)").matches){const target=game.clientWidth*x/100-stage.clientWidth*.5,max=Math.max(0,game.clientWidth-stage.clientWidth);stage.scrollLeft=Math.max(0,Math.min(max,target))}
     if(homeArrivalIndex>=0||eventText){messageBox.hidden=false;text.textContent=eventText;text.classList.remove("idle");return}
     const homeTarget=getHomeInteraction();
     if(homeTarget&&!promptPaused){messageBox.hidden=false;text.textContent=homeTarget.prompt;text.classList.remove("idle");return}
