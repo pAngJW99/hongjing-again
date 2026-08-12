@@ -28,7 +28,7 @@
     @media(max-width:760px){main{display:block;overflow-x:auto;overflow-y:hidden;padding:0;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;touch-action:pan-x}#game{width:198.5vh;min-width:860px;height:100%;aspect-ratio:auto;border:0;border-radius:0;background-size:auto 100%;scroll-snap-align:start}header{position:fixed;inset:12px 12px auto}.title{padding:6px 9px}.title b{font-size:18px}.time-card{padding:5px 8px}.time-card span{font-size:18px}.time-card b{font-size:14px}.menu-button{padding:6px 9px}#collection{position:fixed;left:auto;right:12px;top:76px;width:175px}#message{position:fixed;left:12px;bottom:166px;transform:none;width:calc(100vw - 24px)}#hint{position:fixed;left:50%;bottom:246px}.controls{position:fixed;display:flex;left:16px;right:16px;bottom:14px}#girl{width:51px;height:88px}.cover{position:fixed;width:100vw;min-width:0}.ticket{max-width:430px;padding:28px 24px}.hero-title{font-size:42px}.form-ticket{max-height:94vh;overflow:auto}.menu-panel{position:fixed;right:12px;top:68px}}
     @media(max-width:760px){.top-actions{gap:8px}.time-card{width:136px}#collection{right:12px;width:184px}#message{padding-right:14px}#message #look{display:none}.immersive-exit{position:fixed;right:12px;top:12px;z-index:60}}
     /* Only the reward-screen star is smaller; the map pickup stays unchanged. */
-    .reveal-art.note{width:95px;height:75px;background-size:150%}
+    .reveal-art.note{width:95px;height:75px;background-size:150%}.album-detail-visual.bone,.cell-icon.bone,.reveal-art.bone{background-image:url("home-bone.png");background-repeat:no-repeat;image-rendering:pixelated}.album-detail-visual.bone{background-size:520%;background-position:40% 42%}.cell-icon.bone{background-size:520%;background-position:40% 42%}.reveal-art.bone{width:150px;height:100px;background-size:480%;background-position:40% 42%}
     /* 宏景大地图：第一段只引导前往八中，其他街区仍停留在云雾里。 */
     #game.city-map{aspect-ratio:1484/865;background-image:url("hongjing-map-v2.png");background-size:cover}
     .city-map #train,.city-map>.paper,.city-map #star{display:none}
@@ -81,8 +81,9 @@
     @media(max-width:760px){#game.school-scene{width:200.2vh;min-width:860px;background-size:auto 100%}.school-npc{width:35px;height:90px}#message.dialogue{width:calc(100vw - 24px);min-height:112px}.dialogue-speaker{flex-basis:68px;padding-right:8px}.dialogue-portrait{width:50px;height:50px}}
     #game.home-scene{aspect-ratio:1448/1086;background-color:#030604;background-image:url("new-home.png");background-position:center;background-size:112% auto;background-repeat:no-repeat}
     .home-scene #train,.home-scene #star,.home-scene>.paper,.home-scene .map-fog,.home-scene .map-cloud,.home-scene .map-location,.home-scene .city-npc,.home-scene .school-npc{display:none!important}.home-scene #girl{display:block;width:37px;height:64px}.home-scene.home-locked .controls{display:none!important}
+    .home-object{display:none;position:absolute;z-index:11;inset:0;pointer-events:none;background-position:center;background-size:112% auto;background-repeat:no-repeat;image-rendering:pixelated}.home-scene .home-object{display:block}.home-dog{background-image:url("home-dog.png")}.home-bone{background-image:url("home-bone.png")}.home-bone.collected{display:none!important}
     #game.home-scene:before{content:"";position:absolute;z-index:18;inset:0;background:#020403;opacity:0;pointer-events:none;transition:opacity 1.5s ease}#game.home-scene.home-locked:before{opacity:1}.home-scene #message{z-index:22}.home-scene #message.home-dialogue{width:min(760px,calc(100% - 80px));min-height:104px}
-    @media(max-width:760px){#game.home-scene{width:133.33vh;width:133.33svh;min-width:720px;background-position:center;background-size:auto 114%}.home-scene #girl{width:34px;height:59px}.home-scene #collection{display:none!important}.home-scene #message.home-dialogue{left:12px;right:12px;width:auto;min-height:112px}}
+    @media(max-width:760px){#game.home-scene{width:133.33vh;width:133.33svh;min-width:720px;background-position:center;background-size:auto 114%}.home-scene .home-object{background-size:auto 114%}.home-scene #girl{width:34px;height:59px}.home-scene #collection{display:none!important}.home-scene #message.home-dialogue{left:12px;right:12px;width:auto;min-height:112px}}
     @media(max-width:760px){#game.home-scene.home-locked #message #look{display:block;flex:0 0 auto}}
     .test-only[hidden]{display:none!important}.test-launch{margin-top:18px;border:0;border-bottom:1px dashed #987044;background:transparent;color:#77542f;padding:7px 12px;cursor:pointer;font-size:12px;letter-spacing:.12em}.test-entry{z-index:92}.test-ticket{width:min(640px,94%);max-height:92vh;overflow:auto;text-align:left}.test-ticket h2{text-align:center;margin:5px 0 8px;color:#193c31}.test-note{text-align:center;color:#805c35;font-size:13px;line-height:1.7;margin:0 0 16px}.test-route-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.test-route{border:2px solid #765535;background:#f3dfaa;color:#29452f;padding:12px;text-align:left;cursor:pointer;box-shadow:2px 2px 0 #314631}.test-route b{display:block;margin-bottom:3px}.test-route small{color:#7b5937}.test-actions{display:flex;gap:9px;margin-top:16px}.test-actions button{flex:1}.test-secondary{border:2px solid #765535;background:#dbc28b;color:#594126;padding:10px;cursor:pointer}.menu-panel #testEntryButton{color:#9a4c31}
     @media(max-width:620px){.test-route-grid{grid-template-columns:1fr}.test-ticket{padding:22px 18px}.test-actions{flex-direction:column}}
@@ -147,7 +148,7 @@
   <button id="mapPark" class="map-location locked loc-park">小公园</button><span class="map-location locked loc-chess">石桌棋盘</span><span class="map-location locked loc-cycle">骑车散步道</span>
   <button id="mapStation" class="map-location open loc-station">宏景火车站</button><span class="map-location locked loc-photo">老照相馆</span><span class="map-location locked loc-night">夜市巷子</span><span class="map-location locked loc-stall">路边摊 / 夜市</span>
   <button id="star" aria-label="星形便签">★</button>
-  <div id="girl" aria-label="背着绿色背包的游客"></div>
+  <div id="homeDog" class="home-object home-dog" aria-label="睡在软垫上的小狗"></div><div id="homeBone" class="home-object home-bone" aria-label="地上的小骨头"></div><div id="girl" aria-label="背着绿色背包的游客"></div>
   <header><div class="title panel"><small>A区 · 序章</small><b>宏景火车站</b></div><div class="top-actions"><div class="time-card panel"><span>☀</span><small>晴 · 清晨</small><b id="clock">08:20</b></div><button id="menuButton" class="menu-button" aria-label="打开旅行菜单">▣</button></div></header>
   <aside id="menuPanel" class="menu-panel panel" hidden><button id="editTraveler">修改身份</button><button id="restartJourney">重新开始</button><button id="immersiveToggle">进入沉浸模式</button><button id="mapButton">地图</button><button id="albumButton">收藏册</button><button id="sound">环境音：关</button><button id="testEntryButton" class="test-only" hidden>测试入口</button></aside><button id="immersiveExit" class="immersive-exit">退出</button>
   <section id="album" class="cover album" hidden><div class="ticket album-ticket"><div class="eyebrow" style="text-align:center">HONG JING COLLECTION</div><h2>收藏册</h2><p class="album-subtitle">把重逢途中遇到的人与事，慢慢留在这里。</p><nav class="album-tabs" aria-label="收藏册分类"><button id="itemsTab" class="active">随身物件</button><button id="peopleTab">人物图鉴</button></nav><div class="album-workspace"><aside id="albumDetail" class="album-detail"><div id="albumDetailVisual" class="album-detail-visual">?</div><h3 id="albumDetailTitle">尚未选择</h3><p id="albumDetailText">点击一格，查看它留下的故事。</p><button id="albumDetailClose" class="album-detail-close">返回收藏册</button></aside><div class="album-pages"><section id="itemsPage" class="album-page" aria-label="随身物件"><div id="itemGrid" class="album-grid"></div></section><section id="peoplePage" class="album-page" aria-label="人物图鉴" hidden><div id="personGrid" class="album-grid"></div></section></div></div><button id="albumClose" class="stamp-button album-close">合 上 收 藏 册</button></div></section>
@@ -182,7 +183,8 @@
     {title:"星形便签",icon:"star",unlocked:()=>note,text:"愿你在再次抵达之际，也从未遗忘那颗星。"},
     {title:"住处钥匙",icon:"key",unlocked:()=>schoolMet,text:"林晚星交给你的钥匙。钥匙圈上贴着一小条褪色的胶布。"},
     {title:"林晚星的纸条",icon:"paper",unlocked:()=>schoolMet,text:"纸上写着去往住处的路线，以及热水器和门锁的用法。"},
-    ...Array.from({length:8},()=>({title:"尚未发现",icon:"",unlocked:()=>false,text:"这里还空着，等待下一件小小纪念品。"}))
+    {title:"小小的骨头",icon:"bone",unlocked:()=>typeof homeBoneCollected!=="undefined"&&homeBoneCollected,text:"在新住处地板上捡到的小骨头。看起来属于那位正在熟睡的住户。"},
+    ...Array.from({length:7},()=>({title:"尚未发现",icon:"",unlocked:()=>false,text:"这里还空着，等待下一件小小纪念品。"}))
   ];
   function clearAlbumSelection(){document.querySelectorAll(".album-cell.selected").forEach(cell=>cell.classList.remove("selected"))}
   function showAlbumDetail(entry,cell,type="item",openPanel=true){
@@ -228,8 +230,8 @@
 <script>
   let pendingCollect="";
   const itemReveal=document.querySelector("#itemReveal"),revealArt=document.querySelector("#revealArt"),revealTitle=document.querySelector("#revealTitle"),revealText=document.querySelector("#revealText");
-  function revealItem(type){pendingCollect=type;playing=false;revealArt.className="reveal-art "+type;revealTitle.textContent=type==="stamp"?"回到宏景":"星形便签";revealText.textContent=type==="stamp"?"宏景火车站 · 地点邮戳":"愿你在再次抵达之际，也从未遗忘那颗星。";itemReveal.hidden=false}
-  document.querySelector("#archiveItem").onclick=()=>{const type=pendingCollect;pendingCollect="";itemReveal.hidden=true;playing=true;showEvent(type==="stamp"?"站台邮戳已收集：回到宏景。已放入收藏册。":"便签：愿你在再次抵达之际，也从未遗忘那颗星。")};
+  function revealItem(type){const info={stamp:["回到宏景","宏景火车站 · 地点邮戳"],note:["星形便签","愿你在再次抵达之际，也从未遗忘那颗星。"],bone:["小小的骨头","看起来属于房间里那位正在熟睡的住户。"]}[type];pendingCollect=type;playing=false;revealArt.className="reveal-art "+type;revealTitle.textContent=info[0];revealText.textContent=info[1];itemReveal.hidden=false}
+  document.querySelector("#archiveItem").onclick=()=>{const type=pendingCollect;pendingCollect="";itemReveal.hidden=true;playing=true;showEvent(type==="stamp"?"站台邮戳已收集：回到宏景。已放入收藏册。":type==="bone"?"小小的骨头已放入收藏册。":"便签：愿你在再次抵达之际，也从未遗忘那颗星。")};
   interact=function(){const nearHall=Math.abs(x-18)<5&&Math.abs(y-64)<7,nearBench=Math.abs(x-60)<6&&Math.abs(y-64)<7,nearShop=Math.abs(x-80)<6&&Math.abs(y-64)<7;if(storyStep>=2&&!note&&Math.abs(x-66)<4.5&&Math.abs(y-64)<7){note=true;star.remove();noteState.textContent="★ 星形便签";noteState.className="yes";storyStep=3;saveGame();revealItem("note")}else if(storyStep>=1&&!stamp&&Math.abs(x-49)<4.5&&Math.abs(y-64)<7){stamp=true;stampState.textContent="◉ 回到宏景";stampState.className="yes";star.hidden=false;storyStep=2;saveGame();revealItem("stamp")}else if(nearHall){showEvent("候车大厅：有些老旧的候车大厅，出站口就在另一头。")}else if(nearBench){showEvent("长椅：掉了些漆的长椅，等车的人总爱在这里歇一会儿。")}else if(nearShop){showEvent("小卖部：卖水、泡面和两块钱一根的烤肠，火车进站时最热闹。")}else render()};
 </script>
 <script>
@@ -434,8 +436,22 @@
 </script>
 <script>
   /* 新住处入场：门外保持黑屏，完成开锁对白后再亮出房间。 */
-  let homeUnlocked=false,homeArrivalIndex=-1,homeMessageDismissed=false;
+  let homeUnlocked=false,homeArrivalIndex=-1,homeMessageDismissed=false,homeBoneCollected=false,homeDogSeen=false;
+  const homeDog=document.querySelector("#homeDog"),homeBone=document.querySelector("#homeBone");
   const homeExplorePrompt="转转吧，熟悉一下新住处。";
+  const homeInteractions=[
+    {id:"bone",x:38.9,y:41,r:5,prompt:"地板上好像落着什么。按 E 或点击“查看”捡起来。"},
+    {id:"dog",x:36.5,y:67.5,r:6,prompt:"软垫上似乎睡着一团毛茸茸的东西。按 E 或点击“查看”。"},
+    {id:"window",x:20,y:27.5,r:6,prompt:"窗外的光落在水池边。按 E 或点击“查看”。",text:"窗户擦得很干净。从这里望出去，正好能看见宏景层层叠叠的屋顶。"},
+    {id:"table",x:15,y:57,r:6,prompt:"餐桌上放着一小瓶花。按 E 或点击“查看”。",text:"餐桌：花瓶里的花刚换过水。看来林晚星在你来之前，认真收拾过这里。"},
+    {id:"fridge",x:35,y:24,r:6,prompt:"冰箱门上贴着几张小纸片。按 E 或点击“查看”。",text:"冰箱：里面有水和几个鸡蛋。门上贴着一张字条——“缺什么自己买，别只吃泡面。”"},
+    {id:"bed",x:73,y:49,r:7,prompt:"床铺已经收拾好了。按 E 或点击“查看”。",text:"床铺松软而整洁，枕边还留着一点晒过太阳的味道。"},
+    {id:"balcony",x:89,y:53,r:6,prompt:"阳台上摆满了植物。按 E 或点击“查看”。",text:"阳台：大大小小的花盆挤在一起，叶片被风吹得轻轻摇晃。"}
+  ];
+  function getHomeInteraction(){
+    const scale=matchMedia("(max-width:760px)").matches?1.14:1.12,sourceX=(x-50)/scale+50,sourceY=(y-50)/scale+50;
+    return homeInteractions.find(item=>(item.id!=="bone"||!homeBoneCollected)&&Math.hypot(sourceX-item.x,sourceY-item.y)<=item.r);
+  }
   const homeArrivalDialogue=[
     {text:"居民楼二楼。二楼最里面的房门上，贴着一张熟悉的便签。"},
     {speaker:"门上的便签",text:"就是这里。钥匙往左转两圈。——林晚星"},
@@ -511,14 +527,16 @@
     if(resuming&&homeUnlocked){homeArrivalIndex=-1;game.classList.remove("home-locked");playing=true;eventText=homeMessageDismissed?"":homeExplorePrompt;messageBox.hidden=homeMessageDismissed;saveGame();render()}else{saveGame();startHomeArrival()}
   }
   const saveBeforeHomeArrival=saveGame;
-  saveGame=function(){saveBeforeHomeArrival();try{const saved=JSON.parse(localStorage.getItem(saveKey)||"{}");saved.homeUnlocked=homeUnlocked;saved.homeMessageDismissed=homeMessageDismissed;saved.homeIntroVersion=1;saved.mapArea=mapArea;localStorage.setItem(saveKey,JSON.stringify(saved));savedGame=saved}catch{}};
+  saveGame=function(){saveBeforeHomeArrival();try{const saved=JSON.parse(localStorage.getItem(saveKey)||"{}");saved.homeUnlocked=homeUnlocked;saved.homeMessageDismissed=homeMessageDismissed;saved.homeBoneCollected=homeBoneCollected;saved.homeDogSeen=homeDogSeen;saved.homeIntroVersion=1;saved.mapArea=mapArea;localStorage.setItem(saveKey,JSON.stringify(saved));savedGame=saved}catch{}};
   const restoreBeforeHomeArrival=restoreGame;
-  restoreGame=function(data){homeUnlocked=Number(data.homeIntroVersion)>=1&&!!data.homeUnlocked;homeMessageDismissed=!!data.homeMessageDismissed;restoreBeforeHomeArrival(data);if((data.mapArea||"station")==="home")enterHome(true)};
+  restoreGame=function(data){homeUnlocked=Number(data.homeIntroVersion)>=1&&!!data.homeUnlocked;homeMessageDismissed=!!data.homeMessageDismissed;homeBoneCollected=!!data.homeBoneCollected;homeDogSeen=!!data.homeDogSeen;restoreBeforeHomeArrival(data);if((data.mapArea||"station")==="home")enterHome(true)};
   const renderBeforeHomeArrival=render;
   render=function(){
     if(mapArea!=="home"){messageBox.hidden=false;renderBeforeHomeArrival();girl.style.backgroundPosition=(frame*50)+"% "+(spriteRows[facing]*33.333)+"%";return}
-    girl.style.left=x+"%";girl.style.top=y+"%";girl.style.zIndex=12;girl.style.setProperty("--row",spriteRows[facing]);girl.style.setProperty("--frame",frame);girl.style.backgroundPosition=(frame*50)+"% "+(spriteRows[facing]*33.333)+"%";hint.hidden=true;stationExit.hidden=true;syncHomeQuestUI();journeyClock.textContent="10:50";journeyWeather.textContent="晴 · 上午";
+    girl.style.left=x+"%";girl.style.top=y+"%";girl.style.zIndex=12;girl.style.setProperty("--row",spriteRows[facing]);girl.style.setProperty("--frame",frame);girl.style.backgroundPosition=(frame*50)+"% "+(spriteRows[facing]*33.333)+"%";homeBone.classList.toggle("collected",homeBoneCollected);hint.hidden=true;stationExit.hidden=true;syncHomeQuestUI();journeyClock.textContent="10:50";journeyWeather.textContent="晴 · 上午";
     if(homeArrivalIndex>=0||eventText){messageBox.hidden=false;text.textContent=eventText;text.classList.remove("idle");return}
+    const homeTarget=getHomeInteraction();
+    if(homeTarget&&!promptPaused){messageBox.hidden=false;text.textContent=homeTarget.prompt;text.classList.remove("idle");return}
     if(homeMessageDismissed){messageBox.hidden=true;return}
     messageBox.hidden=false;text.textContent=homeExplorePrompt;text.classList.remove("idle");
   };
@@ -527,7 +545,18 @@
     if(mapArea!=="home"){moveBeforeHomeArrival(dx,dy);return}
     if(dx<0)facing="left";else if(dx>0)facing="right";else if(dy<0)facing="back";else if(dy>0)facing="front";
     const nextX=Math.max(4,Math.min(96,x+dx)),nextY=Math.max(32,Math.min(90,y+dy));
-    if(isHomeWalkable(nextX,nextY)){x=nextX;y=nextY;queueSave()}render();
+    if(isHomeWalkable(nextX,nextY)){x=nextX;y=nextY;promptPaused=false;queueSave()}render();
+  };
+  const interactBeforeHomeObjects=interact;
+  interact=function(){
+    if(mapArea!=="home"){interactBeforeHomeObjects();return}
+    const target=getHomeInteraction();if(!target){render();return}
+    if(target.id==="bone"){homeBoneCollected=true;homeBone.classList.add("collected");saveGame();revealItem("bone");return}
+    if(target.id==="dog"){
+      const message=homeDogSeen?"小狗蜷在软垫里睡得正香。先不要打扰它。":"……等等，房间里怎么还有一只小狗？林晚星可完全没提过这位住户。它睡得很熟，还是先不要打扰它。";
+      homeDogSeen=true;saveGame();showEvent(message);return
+    }
+    showEvent(target.text);
   };
   const finishBeforeHomeArrival=finishEvent;
   finishEvent=function(){if(homeArrivalIndex>=0){advanceHomeArrival();return}if(mapArea==="home"&&homeUnlocked&&eventText===homeExplorePrompt){eventText="";homeMessageDismissed=true;messageBox.hidden=true;lookButton.textContent="查看 E";touchLookButton.textContent="查看";saveGame();render();return}finishBeforeHomeArrival()};
@@ -570,9 +599,9 @@
       schoolMet=true;homeQuestStep=2;homeUnlocked=false;enterCity();startRouteDialogue();return;
     }
     if(route==="home-door"){
-      schoolMet=true;homeQuestStep=3;homeUnlocked=false;homeMessageDismissed=false;enterHome(false);return;
+      schoolMet=true;homeQuestStep=3;homeUnlocked=false;homeMessageDismissed=false;homeBoneCollected=false;homeDogSeen=false;enterHome(false);return;
     }
-    schoolMet=true;homeQuestStep=4;homeUnlocked=true;homeMessageDismissed=false;enterHome(true);
+    schoolMet=true;homeQuestStep=4;homeUnlocked=true;homeMessageDismissed=false;homeBoneCollected=false;homeDogSeen=false;enterHome(true);
   }
   const saveBeforeTestEntry=saveGame;
   saveGame=function(){if(testMode)return;saveBeforeTestEntry()};
@@ -585,7 +614,7 @@
   (()=>{
     const overlay=document.querySelector("#preloader"),bar=document.querySelector("#loadingBar"),percent=document.querySelector("#loadingPercent"),status=document.querySelector("#loadingStatus");
     if(!overlay||!bar||!percent||!status)return;
-    const sources=["hongjing-station.png","traveler-walk.png","green-train.png","hongjing-stamp.png","star-note.png"];
+    const sources=["hongjing-station.png","traveler-walk.png","green-train.png","hongjing-stamp.png","star-note.png","new-home.png","home-dog.png","home-bone.png"];
     const started=performance.now(),minimum=700;let completed=0,actual=2,shown=0,closing=false,removed=false;
     const update=()=>{
       const elapsed=performance.now()-started,waiting=Math.min(84,elapsed/115),target=closing?100:Math.max(actual,waiting);
