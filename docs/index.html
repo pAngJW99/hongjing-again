@@ -149,7 +149,7 @@
   <button id="mapStation" class="map-location open loc-station">宏景火车站</button><span class="map-location locked loc-photo">老照相馆</span><span class="map-location locked loc-night">夜市巷子</span><span class="map-location locked loc-stall">路边摊 / 夜市</span>
   <button id="star" aria-label="星形便签">★</button>
   <div id="homeDog" class="home-object home-dog" aria-label="睡在软垫上的小狗"></div><div id="homeBone" class="home-object home-bone" aria-label="地上的小骨头"></div><div id="girl" aria-label="背着绿色背包的游客"></div>
-  <header><div class="title panel"><small>A区 · 序章</small><b>宏景火车站</b></div><div class="top-actions"><div class="time-card panel"><span>☀</span><small>晴 · 清晨</small><b id="clock">08:20</b></div><button id="menuButton" class="menu-button" aria-label="打开旅行菜单">▣</button></div></header>
+  <header><div class="title panel"><small>序章</small><b>宏景火车站</b></div><div class="top-actions"><div class="time-card panel"><span>☀</span><small>晴 · 清晨</small><b id="clock">08:20</b></div><button id="menuButton" class="menu-button" aria-label="打开旅行菜单">▣</button></div></header>
   <aside id="menuPanel" class="menu-panel panel" hidden><button id="editTraveler">修改身份</button><button id="restartJourney">重新开始</button><button id="immersiveToggle">进入沉浸模式</button><button id="mapButton">地图</button><button id="albumButton">收藏册</button><button id="sound">环境音：关</button><button id="testEntryButton" class="test-only" hidden>测试入口</button></aside><button id="immersiveExit" class="immersive-exit">退出</button>
   <section id="album" class="cover album" hidden><div class="ticket album-ticket"><div class="eyebrow" style="text-align:center">HONG JING COLLECTION</div><h2>收藏册</h2><p class="album-subtitle">把重逢途中遇到的人与事，慢慢留在这里。</p><nav class="album-tabs" aria-label="收藏册分类"><button id="itemsTab" class="active">随身物件</button><button id="peopleTab">人物图鉴</button></nav><div class="album-workspace"><aside id="albumDetail" class="album-detail"><div id="albumDetailVisual" class="album-detail-visual">?</div><h3 id="albumDetailTitle">尚未选择</h3><p id="albumDetailText">点击一格，查看它留下的故事。</p><button id="albumDetailClose" class="album-detail-close">返回收藏册</button></aside><div class="album-pages"><section id="itemsPage" class="album-page" aria-label="随身物件"><div id="itemGrid" class="album-grid"></div></section><section id="peoplePage" class="album-page" aria-label="人物图鉴" hidden><div id="personGrid" class="album-grid"></div></section></div></div><button id="albumClose" class="stamp-button album-close">合 上 收 藏 册</button></div></section>
   <section id="itemReveal" class="cover item-reveal" hidden><div class="ticket item-ticket"><div class="eyebrow">NEW COLLECTION</div><div id="revealArt" class="reveal-art"></div><h2 id="revealTitle"></h2><p id="revealText"></p><button id="archiveItem" class="stamp-button">放 入 收 藏 册</button></div></section>
@@ -294,7 +294,7 @@
   }
   function returnToStation(){
     mapArea="station";game.classList.remove("city-map","city-unlocked","school-scene");game.classList.add("started","resumed");schoolNpc.hidden=true;closeDialogueUI();showStationCollectibles();
-    cityTitle.textContent="宏景火车站";citySub.textContent="A区 · 序章";travelerAgeLabel.textContent=travelerAge+" 岁 · 宏景火车站";x=38;y=67;inWaitingRoom=false;playing=true;eventText="";
+    cityTitle.textContent="宏景火车站";citySub.textContent="序章";travelerAgeLabel.textContent=travelerAge+" 岁 · 宏景火车站";x=38;y=67;inWaitingRoom=false;playing=true;eventText="";
     saveGame();showEvent("你收起地图，又回到了宏景火车站。远处的铁轨还留着列车离开的余响。");
   }
   const moveBeforeCity=move;
@@ -614,7 +614,7 @@
   function beginTestRoute(route){
     prepareTestRoute();promptPaused=false;facing="front";storyStep=3;setTestCollected(true,true);
     if(route==="station"){
-      schoolMet=false;homeQuestStep=0;homeUnlocked=false;storyStep=0;setTestCollected(false,false);mapArea="station";game.classList.remove("city-map","city-unlocked","school-scene","home-scene","route-search","route-found","park-event-active");game.classList.add("started","resumed");schoolNpc.hidden=true;cityTitle.textContent="宏景火车站";citySub.textContent="A区 · 序章";travelerAgeLabel.textContent=travelerAge+" 岁 · 宏景火车站";x=29;y=65;playing=true;render();return;
+      schoolMet=false;homeQuestStep=0;homeUnlocked=false;storyStep=0;setTestCollected(false,false);mapArea="station";game.classList.remove("city-map","city-unlocked","school-scene","home-scene","route-search","route-found","park-event-active");game.classList.add("started","resumed");schoolNpc.hidden=true;cityTitle.textContent="宏景火车站";citySub.textContent="序章";travelerAgeLabel.textContent=travelerAge+" 岁 · 宏景火车站";x=29;y=65;playing=true;render();return;
     }
     if(route==="city"){
       schoolMet=false;homeQuestStep=0;homeUnlocked=false;enterCity();return;
